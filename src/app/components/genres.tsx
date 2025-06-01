@@ -1,20 +1,22 @@
+'use client'
 import { useState, useEffect } from "react";
 import { fetchMoviesByGenres, fetchTrendingMovies } from "../lib/tmdb";
 import { Category } from "./category"
+import { Movie } from "./interfaces";
 
 export const Genres =({sectionName}:{sectionName: string}) =>{
-    const [trendingContent, setTrendingContent] = useState([]);
-    const [actionContent, setActionContent] = useState([]);
-    const [mysteryContent, setMysteryContent] = useState([]);
-    const [thrillerContent, setThrillerContent] = useState([]);
-    const [fictionContent, setFictionContent] = useState([]);
-    const [comedyContent, setComedyContent] = useState([]);
-    const [warContent, setWarContent] = useState([]);
-    const [romanceContent, setRomanceContent] = useState([]);
-    const [historyContent, setHistoryContent] = useState([]);
-    const [documentaryContent, setDocumentaryContent] = useState([]);
+    const [trendingContent, setTrendingContent] = useState<Movie[]>([]);
+    const [actionContent, setActionContent] = useState<Movie[]>([]);
+    const [mysteryContent, setMysteryContent] = useState<Movie[]>([]);
+    const [thrillerContent, setThrillerContent] = useState<Movie[]>([]);
+    const [fictionContent, setFictionContent] = useState<Movie[]>([]);
+    const [comedyContent, setComedyContent] = useState<Movie[]>([]);
+    const [warContent, setWarContent] = useState<Movie[]>([]);
+    const [romanceContent, setRomanceContent] = useState<Movie[]>([]);
+    const [historyContent, setHistoryContent] = useState<Movie[]>([]);
+    const [documentaryContent, setDocumentaryContent] = useState<Movie[]>([]);
 
-    const categories = [["Trending ", "trendingContent"],[ "Action  ", "actionContent"], ["Mystery ", "mysteryContent"], ["Thriller", "thrillerContent"], ["Fiction ", "fictionContent"], ["Comedy ", "comedyContent"], ["War ", "warContent"], ["Romance ", "romanceContent"], ["History ", "historyContent"], ["Documentary", "documentaryContent"]]
+    const categories:[string, Movie[]][] = [["Trending ", trendingContent],[ "Action  ", actionContent], ["Mystery ", mysteryContent], ["Thriller", thrillerContent], ["Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent], ["History ", historyContent], ["Documentary", documentaryContent]]
 
     useEffect(() =>{
         async function LoadData(){
@@ -36,8 +38,8 @@ export const Genres =({sectionName}:{sectionName: string}) =>{
     return(
         <div>
             <div>
-                {categories.map((category, index) =>(
-                    <div key={index}><Category category_name={category[0]  + sectionName } content={categories[1]}  /></div>
+                {categories.map(([name, content], index) =>(
+                    <div key={index}><Category category_name={`${name} ${sectionName}` } content={content}  /></div>
                 ))}
                 
             </div>
