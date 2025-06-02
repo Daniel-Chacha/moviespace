@@ -19,7 +19,7 @@ export const Header = ({showTitle= false ,showNavbar= false}) =>{
                     <Link href="/pages/movies">Movies</Link>
                     <Link href="/pages/series">Series</Link>
                     <Link href="/pages/anime">Anime</Link>
-                    <Link href="/pages/animation">Animations</Link>
+                    <Link href="/pages/animations">Animations</Link>
                     <Link href="/pages/about">About</Link>
                 </nav>
                 
