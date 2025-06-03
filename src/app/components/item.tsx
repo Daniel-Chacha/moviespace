@@ -53,7 +53,7 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
             )}
 
             {toggleSeasonsModal &&(
-                <Seasons seasonId={itemsContent.id} onClose={() => setToggleSeasonsModal(false)}/>
+                <Seasons seriesId={itemsContent.id} onClose={() => setToggleSeasonsModal(false)}/>
             )
             }
         </div>
