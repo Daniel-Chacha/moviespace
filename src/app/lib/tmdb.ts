@@ -2,10 +2,10 @@ import axios from "axios";
 
 const TMDB_BASE_URL =  'https://api.themoviedb.org/3';
 
-export async function fetchMoviesByGenres(genreId: number){
+export async function fetchMediaTypeByGenres(genreId: number , type: string){
      
     try{
-        const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`,{
+        const response = await axios.get(`${TMDB_BASE_URL}/discover/${type}`,{
             params:{
                 api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
                 with_genres: genreId,
@@ -18,9 +18,9 @@ export async function fetchMoviesByGenres(genreId: number){
     }
 }
 
-export async function fetchTrendingMovies() {
+export async function fetchTrendingMediaType(type: string) {
   try {
-    const response = await axios.get(`${TMDB_BASE_URL}/trending/movie/week`, {
+    const response = await axios.get(`${TMDB_BASE_URL}/${type}`, {
       params: {
         api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
       },
@@ -32,3 +32,17 @@ export async function fetchTrendingMovies() {
     return [];
   }
 }
+
+export async function fetchSeriesDetails(id: number | string) {
+  const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+
+  try {
+    const response = await fetch(`${TMDB_BASE_URL}/tv/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`);
+    if (!response.ok) throw new Error('Failed to fetch TV details');
+    return await response.json();
+  } catch (error) {
+    console.error('TMDB Series Detail Error:', error);
+    return null;
+  }
+}
+
