@@ -15,7 +15,9 @@ export  type Movie = {
   name: string;
   video: boolean;
   vote_average: number; // Average user rating
-  vote_count: number; // Number of votes
+  vote_count: number | null; // Number of votes
+  subType: string;
+  episodeCount: number;
 }
 
 
@@ -151,4 +153,172 @@ export interface SeasonDetails {
   id: number;
   poster_path: string | null;
   season_number: number;
+}
+ 
+export interface AnimeData {
+  id: number;
+  title: {
+    romaji: string;
+    english: string | null; // English title might not always be present
+  };
+  format: 'TV' | 'MOVIE' | 'OVA' | 'ONA' | 'SPECIAL' | 'MUSIC'; // Using specific literal types
+  genres: string[];
+  description: string | null; // Description might be null for some entries
+  coverImage: {
+    large: string;
+    medium?: string; // Kitsu often has a 'medium' size too, making it optional
+  };
+  // You could add more fields if your actual data has them, for example:
+  // averageScore?: number;
+  // popularity?: number;
+  // episodes?: number;
+  // startDate?: {
+  //   year: number;
+  //   month: number;
+  //   day: number;
+  // };
+}
+
+
+
+
+
+
+
+
+
+// --- Core Kitsu API Structure ---
+
+export interface KitsuApiResponse<T> {
+  data: KitsuData<T>;
+}
+
+export interface KitsuData<T> {
+  id: string;
+  type: string; // "anime" in this case
+  links: {
+    self: string;
+  };
+  attributes: T; // T will be AnimeAttributes in this case
+  relationships: KitsuRelationships;
+}
+
+// --- Specific Anime Attributes ---
+
+export interface AnimeAttributes {
+  createdAt: string; // Date-time string, e.g., "2015-12-10T23:03:02.734Z"
+  updatedAt: string; // Date-time string, e.g., "2025-06-07T06:23:23.187Z"
+  slug: string; // e.g., "kimi-no-na-wa"
+  synopsis: string;
+  description: string;
+  coverImageTopOffset: number; // e.g., 275
+  titles: AnimeTitles;
+  canonicalTitle: string; // e.g., "Kimi no Na wa."
+  abbreviatedTitles: string[]; // e.g., []
+  averageRating: string; // e.g., "83.31"
+  ratingFrequencies: RatingFrequencies;
+  userCount: number; // e.g., 406934
+  favoritesCount: number; // e.g., 4161
+  startDate: string; // Date string, e.g., "2016-08-26"
+  endDate: string; // Date string, e.g., "2016-08-26"
+  nextRelease: string | null; // Date-time string or null
+  popularityRank: number; // e.g., 8
+  ratingRank: number; // e.g., 55
+  ageRating: string; // e.g., "PG"
+  ageRatingGuide: string; // e.g., "Teens 13 or older"
+  subtype: AnimeSubtype; // "movie", "tv", "ova", "ona", "special", "music", "tv_short"
+  status: string; // e.g., "finished"
+  tba: string | null; // "To Be Announced", can be null
+  posterImage: ImageSet;
+  coverImage: ImageSet | null; // Can be null for some entries
+  episodeCount: number; // e.g., 1
+  episodeLength: number; // in minutes, e.g., 106
+  totalLength: number; // in minutes, e.g., 106
+  youtubeVideoId: string | null; // YouTube video ID, e.g., "3KR8_igDs1Y" or null
+  showType: AnimeSubtype; // Same as subtype, "movie", "tv", etc.
+  nsfw: boolean; // Not Safe For Work, e.g., false
+}
+
+export type AnimeSubtype = "movie" | "tv" | "ova" | "ona" | "special" | "music" | "tv_short";
+
+export interface AnimeTitles {
+  en?: string; // Optional English title, e.g., "Your Name."
+  en_jp?: string; // Optional Romaji English title, e.g., "Kimi no Na wa."
+  en_us?: string; // Optional US English title, e.g., "Your Name."
+  ja_jp?: string; // Optional Japanese title, e.g., "君の名は。"
+  // Kitsu API can have other language codes too, but these are common
+  [key: string]: string | undefined;
+}
+
+export interface RatingFrequencies {
+  // Keys are rating values (2, 3, ..., 20), values are counts
+  [key: string]: string; // Using string for count as per your data "11519"
+}
+
+export interface ImageSet {
+  tiny: string; // URL to tiny image
+  large: string; // URL to large image
+  small: string; // URL to small image
+  medium: string; // URL to medium image
+  original: string; // URL to original image
+  meta: ImageMeta;
+}
+
+export interface ImageMeta {
+  dimensions: ImageDimensions;
+}
+
+export interface ImageDimensions {
+  tiny: ImageSize;
+  large: ImageSize;
+  small: ImageSize;
+  medium?: ImageSize; // 'medium' might not always be present for coverImage
+}
+
+export interface ImageSize {
+  width: number;
+  height: number;
+}
+
+// --- Relationships ---
+
+export interface KitsuRelationships {
+  genres: RelationshipLinks;
+  categories: RelationshipLinks;
+  castings: RelationshipLinks;
+  installments: RelationshipLinks;
+  mappings: RelationshipLinks;
+  reviews: RelationshipLinks;
+  mediaRelationships: RelationshipLinks;
+  characters: RelationshipLinks;
+  staff: RelationshipLinks;
+  productions: RelationshipLinks;
+  quotes: RelationshipLinks;
+  episodes: RelationshipLinks;
+  streamingLinks: RelationshipLinks;
+  animeProductions: RelationshipLinks;
+  animeCharacters: RelationshipLinks;
+  animeStaff: RelationshipLinks;
+  // ... potentially more relationships
+}
+
+export interface RelationshipLinks {
+  links: {
+    self: string;
+    related: string;
+  };
+}
+
+// --- Full Interface for the provided data ---
+
+export type KitsuAnimeResponse ={
+  // data: {
+    id: string;
+    type: "anime";
+    links: {
+      self: string;
+    };
+    attributes: AnimeAttributes;
+    relationships: KitsuRelationships;
+  // };
 }

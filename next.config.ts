@@ -9,7 +9,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'image.tmdb.org',
+        hostname: 'image.tmdb.org',        
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.kitsu.app',
       },
     ],
   },

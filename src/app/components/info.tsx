@@ -1,7 +1,11 @@
+'use client'
 import Image from "next/image"
 import { Movie } from "./interfaces"
 import { Btn } from "./btn"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { Seasons } from "./season"
 
 interface InfoProps{
     infoContent:Movie,
@@ -9,15 +13,21 @@ interface InfoProps{
 }
 
 export const Info = ({infoContent, onClose}: InfoProps ) =>{
+    const [toggleSeasonsModal, setToggleSeasonsModal] = useState<boolean>(false);
+    const pathname = usePathname();
+
+    const isInMoviesPage = pathname.startsWith('/pages/movies');
+    const isInSeriesPage = pathname.startsWith('/pages/series');
+    const  isInAnimePage = pathname.startsWith('/pages/anime');
     return(
         <div className="fixed inset-0 bg-[#00000090] z-50 flex items-center justify-center p-4 cursor-default">
-            <div className="bg-[#121212] text-white rounded-lg shadow-lg max-w-md w-full relative">
+            <div className="bg-[#121212] text-white rounded-lg shadow-lg  w-[50vw] relative">
 
                 <div className="flex flex-row gap-4 justify-around">
                     {/* Image Section */}
                     <div className="relative w-40 h-40 rounded-t-lg overflow-hidden">
                         <Image
-                            src={`https://image.tmdb.org/t/p/w500${infoContent.poster_path}`}
+                            src={ isInAnimePage? infoContent.poster_path :`https://image.tmdb.org/t/p/w500${infoContent.poster_path}`}
                             alt={infoContent.title}
                             fill
                             className="object-cover"
@@ -45,12 +55,26 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
 
                 <div className="flex flex-row justify-around mb-3">
                     <Btn label={"Cancel"} method={onClose} />
-                    <Link href={`/pages/movies/${infoContent.id}`}>
-                        <Btn label={"Watch"} method={onClose} />
-                    </Link>
+                    {isInMoviesPage &&(
+                        <Link href={`/pages/movies/${infoContent.id}`}>
+                            <Btn label={"Watch"} method={onClose} />
+                        </Link>
+                    )}
+
+                    {isInSeriesPage &&(
+                        <span onClick={() => setToggleSeasonsModal(!toggleSeasonsModal)}>
+                            <Btn  label={"Watch"} method={onClose} />
+                        </span>                                 
+                    )}
+
                     
                 </div>
-                
+
+                {toggleSeasonsModal &&(
+                    <Seasons seriesId={infoContent.id} onClose={() => setToggleSeasonsModal(false)}/>
+                )
+                }
+    
             </div>
         </div>
 

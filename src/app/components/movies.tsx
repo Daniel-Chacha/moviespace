@@ -4,6 +4,7 @@ import { Genres } from "./genres"
 import { useState, useEffect } from "react"
 import { fetchMediaTypeByGenres, fetchTrendingMediaType } from "../lib/tmdb";
 import { Movie } from "./interfaces";
+import { Footer } from "./footer";
 
 export default function Movies(){
     const [trendingContent, setTrendingContent] = useState<Movie[]>([]);
@@ -50,6 +51,7 @@ export default function Movies(){
                 <Genres sectionName= "Movies" categories={categories}/>
             </div>
             
+            <Footer />
         </div>
     )
 }
