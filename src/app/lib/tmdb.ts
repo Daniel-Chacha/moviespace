@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Movie, KitsuAnimeResponse } from "../components/interfaces";
+import { Episode } from "../components/interfaces";
 
 const TMDB_BASE_URL =  'https://api.themoviedb.org/3';
 
@@ -103,6 +104,7 @@ export async function fetchTrendingAnime(): Promise<Movie[]> {
       video: false,
       vote_average: anime.attributes.averageRating ? parseFloat(anime.attributes.averageRating) / 10 : 0,
       vote_count: null,
+      subType: anime.attributes.subtype,
       episodeCount: anime.attributes.episodeCount,
     }));
 
@@ -257,5 +259,55 @@ export async function fetchAnimeByGenre(genre: string): Promise<Movie[]> {
   } catch (error) {
     console.error('Error fetching anime from Kitsu API:', error);
     return [];
+  }
+}
+
+
+
+interface EpisodeResponse {
+  episodes: Episode[];
+  nextPage: number | null;
+}
+
+export async function fetchAnimeEpisodes(animeId: number, page: number = 1): Promise<EpisodeResponse> {
+  try {
+    const limit = 20;
+    const offset = (page - 1) * limit;
+    const url = `https://kitsu.io/api/edge/episodes?filter[mediaId]=${animeId}&filter[mediaType]=Anime&sort=number&page[limit]=${limit}&page[offset]=${offset}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    const formattedEpisodes: Episode[] = data.data.map((episode: any) => ({
+      air_date: episode.attributes.airdate || '',
+      episode_number: episode.attributes.number || 0,
+      id: parseInt(episode.id),
+      name: episode.attributes.titles?.en || episode.attributes.titles?.en_jp || episode.attributes.canonicalTitle || '',
+      overview: episode.attributes.synopsis || '',
+      production_code: episode.attributes.productionCode || '',
+      runtime: episode.attributes.length ? parseInt(episode.attributes.length) : null,
+      season_number: episode.attributes.seasonNumber || 1,
+      show_id: animeId,
+      still_path: episode.attributes.thumbnail?.original || null,
+      vote_average: episode.attributes.averageRating ? parseFloat(episode.attributes.averageRating) / 10 : 0,
+      vote_count: null
+    }));
+
+    const nextPage = data.links?.next ? page + 1 : null;
+    console.log("Formatted Episodes:", formattedEpisodes);
+    return { episodes: formattedEpisodes, nextPage };
+  } catch (error) {
+    console.error(`Error fetching episodes for anime ID ${animeId} from Kitsu API:`, error);
+    return { episodes: [], nextPage: null };
   }
 }

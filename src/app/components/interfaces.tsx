@@ -139,7 +139,7 @@ export interface Episode {
   runtime: number | null;
   season_number: number;
   show_id: number;
-  still_path: string | null;
+  still_path: string ;
   vote_average: number;
   vote_count: number;
 }
@@ -168,15 +168,7 @@ export interface AnimeData {
     large: string;
     medium?: string; // Kitsu often has a 'medium' size too, making it optional
   };
-  // You could add more fields if your actual data has them, for example:
-  // averageScore?: number;
-  // popularity?: number;
-  // episodes?: number;
-  // startDate?: {
-  //   year: number;
-  //   month: number;
-  //   day: number;
-  // };
+ 
 }
 
 

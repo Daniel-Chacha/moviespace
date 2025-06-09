@@ -1,13 +1,19 @@
 import Image from "next/image"
 import { Episode } from "./interfaces"
 import Link from "next/link"
+import { usePathname } from "next/navigation";
+
+
 export const Episodes =({episodeData}:{episodeData: Episode}) =>{
+    const pathname = usePathname();
+
+    const isInSeriesPage = pathname.startsWith('/pages/series');
     return(
         <Link href={`/pages/series/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`}>
             <div className="flex flex-row gap-4 border-t-[0.5px] border-t-cyan-300 py-5">
                 <span className="text-3xl">{episodeData.episode_number}</span>
                 <div className="w-32 h-32 relative rounded-t-lg flex-shrink-0">
-                    <Image className="object-cover rounded" src={ episodeData.still_path ? `https://image.tmdb.org/t/p/w500${episodeData.still_path}` : '/fallback.jpg' } 
+                    <Image className="object-cover rounded" src={ isInSeriesPage? `https://image.tmdb.org/t/p/w500${episodeData.still_path}` :episodeData.still_path } 
                     fill alt={episodeData.name} />
                 </div>
 

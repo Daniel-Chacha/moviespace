@@ -6,6 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { Seasons } from "./season"
+import { AnimeTypeTvEpisodes } from "./animeTypeTv"
 
 interface InfoProps{
     infoContent:Movie,
@@ -14,6 +15,8 @@ interface InfoProps{
 
 export const Info = ({infoContent, onClose}: InfoProps ) =>{
     const [toggleSeasonsModal, setToggleSeasonsModal] = useState<boolean>(false);
+    const [toggleAnimeEpisodesModals, setToggleAnimeEpisodesModals] = useState<boolean>(false);
+
     const pathname = usePathname();
 
     const isInMoviesPage = pathname.startsWith('/pages/movies');
@@ -35,8 +38,9 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
                     </div>
                     <div className="m-auto">
                         <p className="text-xl font-bold  text-cyan-300 underline underline-offset-4 text-center">{infoContent.title}</p>
+                        {infoContent.subType && <p className="text-sm text-gray-300 mt-3"> <strong>Sub Type:</strong> {infoContent.subType}</p>}
                         <p className="text-sm text-gray-300">
-                            <strong>Viewer Rating:</strong>  {infoContent.vote_average}
+                            <strong>Viewer Rating:</strong>   {Math.round(infoContent.vote_average) }
                         </p>
                         <p className="text-sm text-gray-300">
                             <strong>Release Date:</strong> {infoContent.release_date || infoContent.first_air_date}
@@ -67,6 +71,21 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
                         </span>                                 
                     )}
 
+                    {isInAnimePage && (
+                        (infoContent.subType === 'movie' || infoContent.episodeCount === 1 ) ?
+                            <Link href={`/pages/movies/${infoContent.id}`}>
+                                <Btn label={"Watch"} method={onClose} />
+                            </Link>
+                        :
+                            infoContent.vote_average ?
+                            <span onClick={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)}>
+                                <Btn  label={"Watch"} method={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)} />
+                            </span>  
+                            :
+                            <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">To Be Released!</span>
+                     
+                    )}
+
                     
                 </div>
 
@@ -74,6 +93,10 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
                     <Seasons seriesId={infoContent.id} onClose={() => setToggleSeasonsModal(false)}/>
                 )
                 }
+
+                {toggleAnimeEpisodesModals && (
+                    <AnimeTypeTvEpisodes id={infoContent.id}  onClose={() => setToggleAnimeEpisodesModals(false)} anime_data={infoContent} />
+                )}
     
             </div>
         </div>
