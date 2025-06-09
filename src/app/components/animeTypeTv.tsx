@@ -5,6 +5,7 @@ import { Episodes } from "./episodes";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Btn } from "./btn";
+// import Link from "next/link";
 
 
 interface AnimeTypeTvProps{
@@ -64,10 +65,13 @@ export const AnimeTypeTvEpisodes = ({id, onClose, anime_data}:AnimeTypeTvProps )
             <div className="relative">
                 <h2 className=" text-center text-cyan-300 font-semibold mt-3">EPISODES</h2>
                 <div>
+                    
                     {animeEpisodesData?.map((episode) =>(
-                        <div key={episode.id}>
-                            <Episodes episodeData={episode} />
+                        <div  key={episode.id}>                           
+                            <Episodes episodeData={episode} />                                              
                         </div>
+
+
                         
                     ))}
                 </div>

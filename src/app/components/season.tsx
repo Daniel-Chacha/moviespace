@@ -1,7 +1,7 @@
 
 'use client'
 import Image from "next/image"
-import { fetchSeriesDetails } from "../lib/tmdb";
+import { fetchSeriesDetail } from "../lib/tmdb";
 import { useState, useEffect } from "react";
 import { TvShowDetails } from "./interfaces";
 import { fetchSeasonEpisodes } from "../lib/tmdb";
@@ -16,22 +16,33 @@ interface SeasonsProps{
 }
 
 export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
-    const [seriesDetails, setSeriesDetails] = useState<TvShowDetails>();
+    console.log("SeriesId", seriesId)
+    const [seriesDetails, setSeriesDetails] = useState<TvShowDetails | null>(null);
     const [page, setPage] = useState<number>(1);
     const [seasonDetails, setSeasonDetails] = useState<Episode[]>([]);
-    // const pathname = usePathname();
+        
+    async function loadSeasonData() {
+    try {
+        // console.log("Calling fetchSeriesDetail");
+        const details = await fetchSeriesDetail(seriesId);
+        // console.log("Details", details);
 
-    // const isInSeriesPage = pathname.startsWith('/pages/series');
-    
+        if (details?.id) {
+        setSeriesDetails(details);
+        getEpisodes({ seriesId: details.id }, { seasonId: 1 });
+        }
+    } catch (err) {
+        console.error("loadSeasonData error:", err);
+    }
+    }
+
     useEffect(() =>{
-        async function loadSeasonData(){
-            setSeriesDetails(await fetchSeriesDetails(seriesId));
+       
+         if (seriesId) {
+            loadSeasonData();
         }
-        loadSeasonData()
-        if (seriesDetails?.id !== undefined) {
-            getEpisodes({ seriesId: seriesDetails.id }, { seasonId: 1 });
-        }
-    }, [seriesDetails?.id, seriesId])
+
+    }, [seriesId])
 
     const handlePrev = () =>{
         if (page > 1){
@@ -66,7 +77,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
                         {/* Image section */}
                         <div className="w-32 h-44 relative rounded-lg flex-shrink-0">
                             <Image className="object-cover rounded" src={ seriesDetails?.poster_path ? `https://image.tmdb.org/t/p/w500${seriesDetails.poster_path}` : '/fallback.jpg' } 
-                            fill alt={seriesDetails!.name} />
+                            fill alt= "Poster" />
                         </div>
 
                         {/* Text section */}

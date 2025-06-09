@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { Seasons } from "./season"
 import { AnimeTypeTvEpisodes } from "./animeTypeTv"
+// import { info } from "console"
 
 interface InfoProps{
     infoContent:Movie,
@@ -22,22 +23,23 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
     const isInMoviesPage = pathname.startsWith('/pages/movies');
     const isInSeriesPage = pathname.startsWith('/pages/series');
     const  isInAnimePage = pathname.startsWith('/pages/anime');
+    // console.log("Info Content", infoContent);
     return(
         <div className="fixed inset-0 bg-[#00000090] z-50 flex items-center justify-center p-4 cursor-default">
-            <div className="bg-[#121212] text-white rounded-lg shadow-lg  w-[50vw] relative">
+            <div className="bg-[#121212] text-white rounded-lg shadow-lg  w-[60vw] relative">
 
                 <div className="flex flex-row gap-4 justify-around">
                     {/* Image Section */}
                     <div className="relative w-40 h-40 rounded-t-lg overflow-hidden">
                         <Image
                             src={ isInAnimePage? infoContent.poster_path :`https://image.tmdb.org/t/p/w500${infoContent.poster_path}`}
-                            alt={infoContent.title}
+                            alt={infoContent.title  || infoContent.original_name}
                             fill
                             className="object-cover"
                         />
                     </div>
                     <div className="m-auto">
-                        <p className="text-xl font-bold  text-cyan-300 underline underline-offset-4 text-center">{infoContent.title}</p>
+                        <p className="text-xl font-bold  text-cyan-300 underline underline-offset-4 text-center">{infoContent.title || infoContent.original_name}</p>
                         {infoContent.subType && <p className="text-sm text-gray-300 mt-3"> <strong>Sub Type:</strong> {infoContent.subType}</p>}
                         <p className="text-sm text-gray-300">
                             <strong>Viewer Rating:</strong>   {Math.round(infoContent.vote_average) }
@@ -47,8 +49,6 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
                         </p>
                     </div>
                 </div>
-
-
 
                 {/* Content */}
                 <div className="p-4 space-y-2">
@@ -66,20 +66,22 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
                     )}
 
                     {isInSeriesPage &&(
-                        <span onClick={() => setToggleSeasonsModal(!toggleSeasonsModal)}>
-                            <Btn  label={"Watch"} method={onClose} />
+                        <span onClick={() => setToggleSeasonsModal(true)}>
+                            <Btn  label={"Watch"} method={() => setToggleSeasonsModal(true) } />
                         </span>                                 
                     )}
 
                     {isInAnimePage && (
                         (infoContent.subType === 'movie' || infoContent.episodeCount === 1 ) ?
-                            <Link href={`/pages/movies/${infoContent.id}`}>
-                                <Btn label={"Watch"} method={onClose} />
-                            </Link>
+                            // <Link href={`/pages/anime/${infoContent.id}`}>
+                            //     <Btn label={"Watch"} method={onClose} />
+                            // </Link>
+                            <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming Capability to be Released Soon!</span>
                         :
                             infoContent.vote_average ?
                             <span onClick={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)}>
-                                <Btn  label={"Watch"} method={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)} />
+                                {/* <Btn  label={"Watch"} method={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)} /> */}
+                                 <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming functionality to be Released Soon!</span>
                             </span>  
                             :
                             <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">To Be Released!</span>

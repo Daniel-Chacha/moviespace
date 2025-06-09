@@ -1,6 +1,7 @@
+'use client'
 import axios from "axios";
 import { Movie, KitsuAnimeResponse } from "../components/interfaces";
-import { Episode } from "../components/interfaces";
+import { Episode, TvShowDetails } from "../components/interfaces";
 
 const TMDB_BASE_URL =  'https://api.themoviedb.org/3';
 
@@ -35,12 +36,12 @@ export async function fetchTrendingMediaType(type: string) {
   }
 }
 
-export async function fetchSeriesDetails(id: number | string) {
+export async function fetchSeriesDetail(id: number ): Promise<TvShowDetails | null> {
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-
   try {
     const response = await fetch(`${TMDB_BASE_URL}/tv/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`);
     if (!response.ok) throw new Error('Failed to fetch TV details');
+
     return await response.json();
   } catch (error) {
     console.error('TMDB Series Detail Error:', error);
@@ -108,7 +109,6 @@ export async function fetchTrendingAnime(): Promise<Movie[]> {
       episodeCount: anime.attributes.episodeCount,
     }));
 
-    console.log("Trending Anime:",formattedAnime)
     return formattedAnime;
   } catch (error) {
     console.error('Error fetching trending anime from Kitsu API:', error);
@@ -156,8 +156,6 @@ export async function fetchPopularAnime(): Promise<Movie[]> {
       episodeCount: anime.attributes.episodeCount,
     }));
 
-    console.log("Popular Data.Data", data.data)
-    console.log("Popular Anime:", formattedAnime)
     return formattedAnime;
   } catch (error) {
     console.error('Error fetching popular anime from Kitsu API:', error);
@@ -304,10 +302,56 @@ export async function fetchAnimeEpisodes(animeId: number, page: number = 1): Pro
     }));
 
     const nextPage = data.links?.next ? page + 1 : null;
+    console.log("Raw Episode Data:", data.data )
     console.log("Formatted Episodes:", formattedEpisodes);
     return { episodes: formattedEpisodes, nextPage };
   } catch (error) {
     console.error(`Error fetching episodes for anime ID ${animeId} from Kitsu API:`, error);
     return { episodes: [], nextPage: null };
+  }
+}
+
+
+
+
+export async function fetchAnimationByGenres(secondaryGenreId: number, page: number = 1 ): Promise<{ results: Movie[]; nextPage: number | null }> {
+  const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+  const ANIMATION_GENRE_ID = 16; // Animation genre ID
+
+  try {
+    const url = `${TMDB_BASE_URL}/discover/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=${ANIMATION_GENRE_ID}|${secondaryGenreId}&page=${page}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // const formattedResults: Movie[] = data.results.map((item: any) => ({
+    //   adult: item.adult || false,
+    //   backdrop_path: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : null,
+    //   genre_ids: item.genre_ids || [],
+    //   id: item.id,
+    //   original_language: item.original_language || 'ja', // Default to 'ja' for anime
+    //   original_title: item.original_name || item.name || '',
+    //   overview: item.overview || '',
+    //   popularity: item.popularity || 0,
+    //   poster_path: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : '',
+    //   release_date: item.first_air_date || '',
+    //   first_air_date: item.first_air_date || '',
+    //   title: item.name || item.original_name || '',
+    //   name: item.name || item.original_name || '',
+    //   video: false, // TMDB doesn't provide video for TV
+    //   vote_average: item.vote_average || 0,
+    //   vote_count: item.vote_count || 0,
+    // }));
+    const result= data.results;
+    const nextPage = data.page < data.total_pages ? page + 1 : null;
+
+    return { results: result, nextPage };
+  } catch (error) {
+    console.error('Error fetching anime by genres from TMDB:', error);
+    return { results: [], nextPage: null };
   }
 }

@@ -6,6 +6,7 @@ export  type Movie = {
   id: number; // Unique ID of the movie
   original_language: string;
   original_title: string;
+  original_name: string;
   overview: string; // A brief summary of the movie
   popularity: number;
   poster_path: string  ; // Path to the movie's poster image

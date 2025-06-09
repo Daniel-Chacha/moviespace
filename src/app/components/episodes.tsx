@@ -9,7 +9,7 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
 
     const isInSeriesPage = pathname.startsWith('/pages/series');
     return(
-        <Link href={`/pages/series/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`}>
+        <Link href={isInSeriesPage? `/pages/series/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`: `/pages/anime/${episodeData.id}`}>
             <div className="flex flex-row gap-4 border-t-[0.5px] border-t-cyan-300 py-5">
                 <span className="text-3xl">{episodeData.episode_number}</span>
                 <div className="w-32 h-32 relative rounded-t-lg flex-shrink-0">
