@@ -23,6 +23,7 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
     const isInMoviesPage = pathname.startsWith('/pages/movies');
     const isInSeriesPage = pathname.startsWith('/pages/series');
     const  isInAnimePage = pathname.startsWith('/pages/anime');
+    const  isInAnimationsPage = pathname.startsWith('/pages/animations');
     // console.log("Info Content", infoContent);
     return(
         <div className="fixed inset-0 bg-[#00000090] z-50 flex items-center justify-center p-4 cursor-default">
@@ -33,13 +34,13 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
                     <div className="relative w-40 h-40 rounded-t-lg overflow-hidden">
                         <Image
                             src={ isInAnimePage? infoContent.poster_path :`https://image.tmdb.org/t/p/w500${infoContent.poster_path}`}
-                            alt={infoContent.title  || infoContent.original_name}
+                            alt={infoContent.title  || infoContent.name}
                             fill
                             className="object-cover"
                         />
                     </div>
                     <div className="m-auto">
-                        <p className="text-xl font-bold  text-cyan-300 underline underline-offset-4 text-center">{infoContent.title || infoContent.original_name}</p>
+                        <p className="text-xl font-bold  text-cyan-300 underline underline-offset-4 text-center">{infoContent.title || infoContent.name}</p>
                         {infoContent.subType && <p className="text-sm text-gray-300 mt-3"> <strong>Sub Type:</strong> {infoContent.subType}</p>}
                         <p className="text-sm text-gray-300">
                             <strong>Viewer Rating:</strong>   {Math.round(infoContent.vote_average) }
@@ -73,19 +74,25 @@ export const Info = ({infoContent, onClose}: InfoProps ) =>{
 
                     {isInAnimePage && (
                         (infoContent.subType === 'movie' || infoContent.episodeCount === 1 ) ?
-                            // <Link href={`/pages/anime/${infoContent.id}`}>
-                            //     <Btn label={"Watch"} method={onClose} />
-                            // </Link>
-                            <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming Capability to be Released Soon!</span>
+                            <Link href={`/pages/anime/${infoContent.id}`}>
+                                <Btn label={"Watch"} method={onClose} />
+                            </Link>
+                            // <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming Capability to be Released Soon!</span>
                         :
                             infoContent.vote_average ?
-                            <span onClick={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)}>
-                                {/* <Btn  label={"Watch"} method={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)} /> */}
-                                 <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming functionality to be Released Soon!</span>
+                            <span >
+                                <Btn  label={"Watch"} method={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)} />
+                                 {/* <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming functionality to be Released Soon!</span> */}
                             </span>  
                             :
                             <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">To Be Released!</span>
                      
+                    )}
+
+                    {isInAnimationsPage &&(
+                        <span onClick={() => setToggleSeasonsModal(true)}>
+                            <Btn  label={"Watch"} method={() => setToggleSeasonsModal(true) } />
+                        </span>   
                     )}
 
                     

@@ -6,16 +6,19 @@ import { Info } from "./info";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Seasons } from "./season";
+import { AnimeTypeTvEpisodes } from "./animeTypeTv";
 
 export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
     const [toggleInfoModal, setToggleInfoModal] = useState<boolean>(false);
     const [toggleSeasonsModal, setToggleSeasonsModal] = useState<boolean>(false);
+    const [toggleAnimeEpisodesModal, setToggleAnimeEpisodesModal] = useState(false);
 
     const pathname = usePathname();
 
     const isInMoviesPage = pathname.startsWith('/pages/movies');
     const isInSeriesPage = pathname.startsWith('/pages/series');
     const  isInAnimePage = pathname.startsWith('/pages/anime');
+    const  isInAnimationsPage = pathname.startsWith('/pages/animations');
 
     const posterUrl = itemsContent.poster_path
     ? `https://image.tmdb.org/t/p/w500${itemsContent.poster_path}`
@@ -36,15 +39,15 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
                             <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
                         </Link>
                     )}
-                    {isInSeriesPage &&(
+                    {(isInSeriesPage || isInAnimationsPage )&&(
                         <svg onClick={() => setToggleSeasonsModal(!toggleSeasonsModal)} xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
                     )}
 
-                    {/* {isInAnimePage &&(
-                        <Link href={`/pages/anime/${itemsContent.id}`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
-                        </Link>
-                    )} */}
+                    {isInAnimePage &&(
+                        // <Link href={`/pages/anime/${itemsContent.id}`}>
+                            <svg onClick={() => {setToggleAnimeEpisodesModal(true)}}  xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
+                        // </Link>
+                    )}
                 
                     <svg onClick={() => setToggleInfoModal(!toggleInfoModal)} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" > <g fill="none" stroke="#4DD0E1" strokeWidth="2"> <circle cx="12" cy="12" r="10" /> <path strokeLinecap="round" d="M12 7h.01" /> <path strokeLinecap="round" strokeLinejoin="round" d="M10 11h2v5m-2 0h4" /> </g> </svg>
                 </div>
@@ -61,8 +64,11 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
 
             {toggleSeasonsModal &&(
                 <Seasons seriesId={itemsContent.id} onClose={() => setToggleSeasonsModal(false)}/>
-            )
-            }
+            )}
+
+            {toggleAnimeEpisodesModal &&(
+                <AnimeTypeTvEpisodes id={itemsContent.id} onClose={() => setToggleAnimeEpisodesModal(false)} anime_data={itemsContent}/>
+            )}
         </div>
 
      

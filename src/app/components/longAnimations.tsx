@@ -1,6 +1,5 @@
 'use client'
 
-import { Header } from "./header"
 import { Genres } from "./genres"
 import { fetchAnimationByGenres } from "../lib/tmdb"
 import { Movie } from "./interfaces"
@@ -12,24 +11,23 @@ interface StateProps{
     page: number;
 }
 
-export const ShortAnimations = () =>{
+export const LongAnimations = () =>{
     
-    // const [popularContent, setPopularContent] = useState<Movie[]>([]);
+    const [trendingContent, setTrendingContent] = useState<StateProps | null>(null);
     const [actionContent, setActionContent] = useState<StateProps | null>(null);
     const [mysteryContent, setMysteryContent] =useState<StateProps | null>(null);
-    const [crimeContent, setCrimeContent] = useState<StateProps | null>(null);
-    const [realityContent, setRealityContent] =useState<StateProps | null>(null);
+    const [familyContent, setFamilyContent] = useState<StateProps | null>(null);
+    const [kidsContent, setKidsContent] =useState<StateProps | null>(null);
     const [fictionContent, setFictionContent] =useState<StateProps | null>(null);
-    const [comedyContent, setComedyContent] = useState<StateProps | null>(null);
+    // const [comedyContent, setComedyContent] = useState<StateProps | null>(null);
     const [warContent, setWarContent] = useState<StateProps | null>(null);
     const [romanceContent, setRomanceContent] = useState<StateProps | null>(null);
     const [dramaContent, setDramaContent] = useState<StateProps | null>(null);
     const [historyContent, setHistoryContent] = useState<StateProps | null>(null);
     const [documentaryContent, setDocumentaryContent] =useState<StateProps | null>(null);
 
-    const categories:[string, StateProps | null ][] = [[ "Action & Adventure ", actionContent], ["Mystery", mysteryContent],["Crime", crimeContent], ["Reality", realityContent], ["Science Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent],["Drama", dramaContent], ["History ", historyContent], ["Documentary", documentaryContent]];
-
-    const setters : [number, Dispatch<SetStateAction<StateProps | null >>][] =[[10759 ,setActionContent], [9648,setMysteryContent],[ 80,setCrimeContent],[10764,setRealityContent], [10765,setFictionContent], [35,setComedyContent],[10768,setWarContent], [10749,setRomanceContent], [18,setDramaContent], [36,setHistoryContent], [99,setDocumentaryContent]]
+   
+    const setters : [number, Dispatch<SetStateAction<StateProps | null >>][] =[[1, setTrendingContent],[10759 ,setActionContent], [9648,setMysteryContent],[ 10751,setFamilyContent],[10762,setKidsContent], [10765,setFictionContent],[10768,setWarContent], [10749,setRomanceContent], [18,setDramaContent], [36,setHistoryContent], [99,setDocumentaryContent]]
     useEffect(() =>{
         async function LoadData(){
             // setPopularContent(await fetchTrendingMediaType("tv/popular"));
@@ -44,14 +42,16 @@ export const ShortAnimations = () =>{
                     })
                 )
             }catch(err){
-                console.error("Errror loading data");
+                console.error("Errror loading data", err);
             }
         }
 
         LoadData();
     },[])
 
+     const categories:[string, Movie[]][] = [["Trending", trendingContent?.results ?? []],["Action & Adventure ", actionContent?.results ?? []], ["Mystery", mysteryContent?.results ?? []],["Family", familyContent?.results ?? []], ["Kids", kidsContent?.results ?? []], ["Science Fiction ", fictionContent?.results ?? []],  ["War ", warContent?.results ?? []], ["Romance ", romanceContent?.results ?? []],["Drama", dramaContent?.results ?? []], ["History ", historyContent?.results ?? []], ["Documentary", documentaryContent?.results ?? []]];
+
     return(
-        
+        <Genres sectionName={"Animation"} categories={categories}/>
     )
 }

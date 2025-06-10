@@ -60,7 +60,7 @@ export async function fetchSeasonEpisodes(tvId: number, seasonNumber: number) {
         },
       }
     );
-
+    // console.log("Episodes:",  response.data.episodes)
     return response.data.episodes; // array of episodes
   } catch (error) {
     console.error('Failed to fetch season episodes:', error);
@@ -311,6 +311,31 @@ export async function fetchAnimeEpisodes(animeId: number, page: number = 1): Pro
   }
 }
 
+
+
+
+export async function fetchTrendingAnimations(page: number = 1): Promise<{ results: Movie[]; nextPage: number | null }> {
+  const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+  const ANIMATION_GENRE_ID = 16; // Animation genre ID
+
+  try {
+    const url = `${TMDB_BASE_URL}/discover/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=${ANIMATION_GENRE_ID}&sort_by=popularity.desc&page=${page}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const result= data.results;
+    const nextPage = data.page < data.total_pages ? page + 1 : null;
+
+    return { results: result, nextPage };
+  } catch (error) {
+    console.error('Error fetching trending animations from TMDB:', error);
+    return { results: [], nextPage: null };
+  }
+}
 
 
 

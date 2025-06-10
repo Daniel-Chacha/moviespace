@@ -5,7 +5,7 @@ import { fetchSeriesDetail } from "../lib/tmdb";
 import { useState, useEffect } from "react";
 import { TvShowDetails } from "./interfaces";
 import { fetchSeasonEpisodes } from "../lib/tmdb";
-// import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Episode } from "./interfaces";
 import { Episodes } from "./episodes";
 // import { fetchAnimeEpisodes } from "../lib/tmdb";
@@ -16,29 +16,37 @@ interface SeasonsProps{
 }
 
 export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
-    console.log("SeriesId", seriesId)
     const [seriesDetails, setSeriesDetails] = useState<TvShowDetails | null>(null);
     const [page, setPage] = useState<number>(1);
     const [seasonDetails, setSeasonDetails] = useState<Episode[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [defaultPosterPath, setDefaultPosterPath] =useState<string>();
+    let defaultPath: string;
+
+    const pathname = usePathname();
+    const  isInAnimationsPage = pathname?.startsWith('/pages/animations') ?? false;
         
     async function loadSeasonData() {
-    try {
-        // console.log("Calling fetchSeriesDetail");
+        setIsLoading(true);
+        try {
         const details = await fetchSeriesDetail(seriesId);
-        // console.log("Details", details);
-
-        if (details?.id) {
         setSeriesDetails(details);
-        getEpisodes({ seriesId: details.id }, { seasonId: 1 });
+        if (details?.id) {
+             defaultPath = details.poster_path;
+            setDefaultPosterPath(defaultPath);
+            await getEpisodes({ seriesId: details.id }, { seasonId: 1 });
         }
-    } catch (err) {
-        console.error("loadSeasonData error:", err);
-    }
+        } catch (err) {
+        console.error('loadSeasonData error:', err);
+        } finally {
+        setIsLoading(false);
+        }
     }
 
     useEffect(() =>{
        
          if (seriesId) {
+            setSeasonDetails([]);
             loadSeasonData();
         }
 
@@ -46,10 +54,11 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
 
     const handlePrev = () =>{
         if (page > 1){
-            setPage(page-1)
+            const newPage = page - 1;
+            setPage(newPage)
 
             if (seriesDetails?.id !== undefined) {
-                getEpisodes({ seriesId: seriesDetails.id }, { seasonId: page - 1 });
+                getEpisodes({ seriesId: seriesDetails.id }, { seasonId: newPage }, );
             }
         };
     };
@@ -64,15 +73,33 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
         };
     }
 
-    async function getEpisodes ({seriesId }: {seriesId:number}, {seasonId}: {seasonId: number}){
-        setSeasonDetails(await fetchSeasonEpisodes(seriesId, seasonId));
+    async function getEpisodes({ seriesId }: { seriesId: number }, { seasonId }: { seasonId: number }, poster_Path: string = defaultPosterPath || defaultPath) {
+        setIsLoading(true);
+        // console.log("Default Poster Path", defaultPosterPath)
+        try {
+        let results = await fetchSeasonEpisodes(seriesId, seasonId);
+        if (isInAnimationsPage && poster_Path) {
+            console.log("Poster path:", poster_Path)
+            results = results.map((episode: Episode) => ({
+            ...episode,
+            seasonPath: poster_Path,
+            }));
+        }
+        setSeasonDetails(results);
+        // console.log('Episodes Results:', results);
+        } catch (err) {
+        console.error('getEpisodes error:', err);
+        setSeasonDetails([]);
+        } finally {
+        setIsLoading(false);
+        }
     }
     // console.log("Series Data:", seriesDetails);
     // console.log("SeasonData:", seasonDetails);
     return(
         <div className="fixed inset-0 bg-[#00000090] z-50 flex justify-center items-center cursor-default">
             <div className="bg-[#121212] text-white shadow-lg rounded-lg w-[90vw] relative h-[90vh] overflow-auto px-8">
-                <svg className="absolute top-2 right-2" onClick={onClose} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#67E8F9" d="m12 13.4l2.9 2.9q.275.275.7.275t.7-.275t.275-.7t-.275-.7L13.4 12l2.9-2.9q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275L12 10.6L9.1 7.7q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7l2.9 2.9l-2.9 2.9q-.275.275-.275.7t.275.7t.7.275t.7-.275zm0 8.6q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"/></svg>
+                <svg className="absolute top-2 right-2" onClick={onClose} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF0000" d="m12 13.4l2.9 2.9q.275.275.7.275t.7-.275t.275-.7t-.275-.7L13.4 12l2.9-2.9q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275L12 10.6L9.1 7.7q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7l2.9 2.9l-2.9 2.9q-.275.275-.275.7t.275.7t.7.275t.7-.275zm0 8.6q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"/></svg>
                 <div className="flex gap-4 mt-3 flex-wrap text-white">
                         {/* Image section */}
                         <div className="w-32 h-44 relative rounded-lg flex-shrink-0">
