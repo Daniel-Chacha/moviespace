@@ -1,7 +1,7 @@
 'use client'
 export  type Movie = {
   adult: boolean;
-  backdrop_path: string | null; // Path to the movie's backdrop image
+  backdrop_path: string ; // Path to the movie's backdrop image
   genre_ids: number[]; // Array of genre IDs
   id: number; // Unique ID of the movie
   original_language: string;
@@ -19,6 +19,7 @@ export  type Movie = {
   vote_count: number | null; // Number of votes
   subType: string;
   episodeCount: number;
+  media_type: 'movie' | 'tv' | 'person';
 }
 
 
@@ -315,4 +316,16 @@ export type KitsuAnimeResponse ={
     attributes: AnimeAttributes;
     relationships: KitsuRelationships;
   // };
+}
+
+
+export interface EpisodeResponse {
+  episodes: Episode[];
+  nextPage: number | null;
+}
+
+
+
+export interface SearchResult {
+  results: Movie[];
 }

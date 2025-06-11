@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link";
+import { SearchTmDb } from "./searchTmdb";
 
 
 export const Header = ({showTitle= false ,showNavbar= false}) =>{
@@ -26,8 +27,8 @@ export const Header = ({showTitle= false ,showNavbar= false}) =>{
             )}
 
             {showNavbar && (
-                 <input className="border-[1px] border-cyan-300 pl-3 rounded-md "  type="search" name="Search" id="Search" placeholder="Search ..."/>
-
+                //  <input className="border-[1px] border-cyan-300 pl-3 rounded-md "  type="search" name="Search" id="Search" placeholder="Search ..."/>
+                <SearchTmDb />
             )}
            
         </header>
