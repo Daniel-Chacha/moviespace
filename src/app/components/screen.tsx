@@ -18,6 +18,7 @@ export const Screen = ({ url }: DisplayProps) => {
           allowFullScreen
           className="w-full h-full"
         ></iframe>
+        
       </div>
 
       <div className="absolute top-3 left-5">

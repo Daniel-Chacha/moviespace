@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import { Screen } from "@/src/app/components/screen";
 
 type PageProps={
