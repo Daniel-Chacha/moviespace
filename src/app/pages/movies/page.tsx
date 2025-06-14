@@ -1,4 +1,4 @@
-import Movies from "@/app/components/movies";
+import Movies from "../../components/movies"
 
 export default function DashboardPage(){
     return <Movies />

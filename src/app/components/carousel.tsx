@@ -11,7 +11,7 @@ const ImageCarousel = () => {
     async function fetchImages() {
       const paths = await getTrendingPosterPaths();
       setImages(paths);
-      console.log('PATHS', paths)
+    //   console.log('PATHS', paths)
     }
     fetchImages();
   }, []);
@@ -26,7 +26,7 @@ const ImageCarousel = () => {
             style={{
               '--i': index + 1,
               transform: `rotateY(calc(var(--i) * 45deg)) translateZ(300px)`,
-            }}
+            } as React.CSSProperties}
           >
             <div className="h-[150px] w-[100px]  absolute rounded-lg border-[6px] border-ridge border-[#ccc]"></div>
             <Image
