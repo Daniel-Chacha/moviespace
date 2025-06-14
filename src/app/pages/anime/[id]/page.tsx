@@ -1,6 +1,6 @@
 'use client';
 import axios from 'axios';
-import { Screen } from '@/app/components/screen';
+import { Screen } from '@/src/app/components/screen';
 import { useState, useEffect } from 'react';
 
 interface WatchData {

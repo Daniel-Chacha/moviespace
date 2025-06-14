@@ -1,5 +1,4 @@
-
-import { Screen } from "@/app/components/screen";
+import { Screen } from "@/src/app/components/screen";
 
 type PageProps={
     params:{

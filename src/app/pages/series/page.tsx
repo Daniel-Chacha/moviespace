@@ -1,4 +1,4 @@
-import { Series } from "@/app/components/series";
+import { Series } from "../../components/series"
 
 export default function SeriesPage(){
     return <Series />
