@@ -49,7 +49,7 @@ export const LongAnimations = () =>{
         LoadData();
     },[])
 
-     const categories:[string, Movie[]][] = [["Trending", trendingContent?.results ?? []],["Action & Adventure ", actionContent?.results ?? []], ["Mystery", mysteryContent?.results ?? []],["Family", familyContent?.results ?? []], ["Kids", kidsContent?.results ?? []], ["Science Fiction ", fictionContent?.results ?? []],  ["War ", warContent?.results ?? []], ["Romance ", romanceContent?.results ?? []],["Drama", dramaContent?.results ?? []], ["History ", historyContent?.results ?? []], ["Documentary", documentaryContent?.results ?? []]];
+     const categories:[string, Movie[]][] = [["🔥 Trending", trendingContent?.results ?? []],["Action & Adventure ", actionContent?.results ?? []], ["Mystery", mysteryContent?.results ?? []],["Family", familyContent?.results ?? []], ["Kids", kidsContent?.results ?? []], ["Science Fiction ", fictionContent?.results ?? []],  ["War ", warContent?.results ?? []], ["Romance ", romanceContent?.results ?? []],["Drama", dramaContent?.results ?? []], ["History ", historyContent?.results ?? []], ["Documentary", documentaryContent?.results ?? []]];
 
     return(
         <Genres sectionName={"Animation"} categories={categories}/>

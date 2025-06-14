@@ -28,7 +28,7 @@ export async function fetchTrendingMediaType(type: string) {
         api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
       },
     });
-    console.log('TRENDING:', response.data.results);
+    // console.log('TRENDING:', response.data.results);
     return response.data.results;
   } catch (error) {
     console.error('TMDB Trending Error: ', error);
@@ -348,25 +348,6 @@ export async function fetchAnimationByGenres(secondaryGenreId: number, page: num
     }
 
     const data = await response.json();
-
-    // const formattedResults: Movie[] = data.results.map((item: any) => ({
-    //   adult: item.adult || false,
-    //   backdrop_path: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : null,
-    //   genre_ids: item.genre_ids || [],
-    //   id: item.id,
-    //   original_language: item.original_language || 'ja', // Default to 'ja' for anime
-    //   original_title: item.original_name || item.name || '',
-    //   overview: item.overview || '',
-    //   popularity: item.popularity || 0,
-    //   poster_path: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : '',
-    //   release_date: item.first_air_date || '',
-    //   first_air_date: item.first_air_date || '',
-    //   title: item.name || item.original_name || '',
-    //   name: item.name || item.original_name || '',
-    //   video: false, // TMDB doesn't provide video for TV
-    //   vote_average: item.vote_average || 0,
-    //   vote_count: item.vote_count || 0,
-    // }));
     const result= data.results;
     const nextPage = data.page < data.total_pages ? page + 1 : null;
 
@@ -380,7 +361,8 @@ export async function fetchAnimationByGenres(secondaryGenreId: number, page: num
 
 
 
-export async function searchTmdb(query: string, mediaType: 'movie' | 'tv' | 'animation' = 'movie', page: number = 1): Promise<SearchResult> {
+
+export async function searchTmdb(query: string, page: number = 1): Promise<SearchResult> {
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
   const ANIMATION_GENRE_ID = 16;
 
@@ -389,50 +371,34 @@ export async function searchTmdb(query: string, mediaType: 'movie' | 'tv' | 'ani
   }
 
   try {
-    let url = `${TMDB_BASE_URL}/search/multi?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${encodeURIComponent(query)}&page=${page}`;
-    
-    // Apply media_type filter for movie or tv
-    if (mediaType === 'movie' || mediaType === 'tv') {
-      url += `&media_type=${mediaType}`;
-    } else if (mediaType === 'animation') {
-      // For animation, filter TV shows with genre 16
-      url += '&media_type=tv&with_genres=16';
-    }
-
+    const url = `${TMDB_BASE_URL}/search/multi?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${encodeURIComponent(query)}&page=${page}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-    const filteredResults: Movie[] = data.results.filter(
-      (item: Movie) => {
-        if (mediaType === 'animation') {
-          return item.media_type === 'tv' && item.genre_ids.includes(ANIMATION_GENRE_ID);
-        }
-        return item.media_type === mediaType || (mediaType === 'animation' && item.media_type === 'tv' && item.genre_ids.includes(ANIMATION_GENRE_ID));
-      }
-    ); // Ensure only the requested type is included
-
-    const formattedResults: Movie[] = filteredResults.map((item: Movie) => ({
-      adult: item.adult || false,
-      backdrop_path: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : null,
-      genre_ids: item.genre_ids || [],
-      id: item.id,
-      original_language: item.original_language || (item.genre_ids?.includes(ANIMATION_GENRE_ID) ? 'ja' : ''),
-      original_title: item.original_title || item.original_name || item.title || item.name || '',
-      overview: item.overview || '',
-      popularity: item.popularity || 0,
-      poster_path: item.poster_path ? `https://image.tmdb.org/t/p/w200${item.poster_path}` : '',
-      release_date: item.release_date || item.first_air_date || '',
-      first_air_date: item.first_air_date || item.release_date || '',
-      title: item.title || item.name || item.original_title || item.original_name || '',
-      name: item.name || item.title || item.original_name || item.original_title || '',
-      video: item.video || false,
-      vote_average: item.vote_average || 0,
-      vote_count: item.vote_count || 0,
-      mediaType: item.media_type as 'movie' | 'tv', // Map media_type to mediaType
-    }));
+    const formattedResults: Movie[] = data.results
+      .filter((item: Movie) => ['movie', 'tv'].includes(item.media_type)) // Exclude people
+      .map((item: Movie) => ({
+        adult: item.adult || false,
+        backdrop_path: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : null,
+        genre_ids: item.genre_ids || [],
+        id: item.id,
+        original_language: item.original_language || (item.genre_ids?.includes(ANIMATION_GENRE_ID) ? 'ja' : ''),
+        original_title: item.original_title || item.original_name || item.title || item.name || '',
+        overview: item.overview || '',
+        popularity: item.popularity || 0,
+        poster_path: item.poster_path ? `https://image.tmdb.org/t/p/w200${item.poster_path}` : '',
+        release_date: item.release_date || item.first_air_date || '',
+        first_air_date: item.first_air_date || item.release_date || '',
+        title: item.title || item.name || item.original_title || item.original_name || '',
+        name: item.name || item.title || item.original_name || item.original_title || '',
+        video: item.video || false,
+        vote_average: item.vote_average || 0,
+        vote_count: item.vote_count || 0,
+        media_type: item.media_type as 'movie' | 'tv',
+      }));
 
     return { results: formattedResults };
   } catch (error) {
@@ -440,3 +406,4 @@ export async function searchTmdb(query: string, mediaType: 'movie' | 'tv' | 'ani
     return { results: [] };
   }
 }
+

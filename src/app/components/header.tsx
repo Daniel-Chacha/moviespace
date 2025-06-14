@@ -1,9 +1,12 @@
 import Image from "next/image"
 import Link from "next/link";
 import { SearchTmDb } from "./searchTmdb";
+import { usePathname } from "next/navigation";
 
 
 export const Header = ({showTitle= false ,showNavbar= false}) =>{
+    const pathname = usePathname()
+    const isInAnimePage = pathname.startsWith('/pages/anime')
     return(
         <header className="flex flex-row justify-center items-center relative py-5  ">
 
@@ -26,7 +29,7 @@ export const Header = ({showTitle= false ,showNavbar= false}) =>{
                 
             )}
 
-            {showNavbar && (
+            {showNavbar && !isInAnimePage && (
                 //  <input className="border-[1px] border-cyan-300 pl-3 rounded-md "  type="search" name="Search" id="Search" placeholder="Search ..."/>
                 <SearchTmDb />
             )}

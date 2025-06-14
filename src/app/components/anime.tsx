@@ -1,15 +1,14 @@
 'use client'
 import { Header } from "./header"
 import { useState, useEffect } from "react"
-// import { fetchTrendingAnime } from "../lib/tmdb"
 import { Genres } from "./genres"
 import { Movie } from "./interfaces"
-// import pLimit from "p-limit"
 //  import { KitsuAnime } from "./interfaces"
 //  import { AnimeData } from "./interfaces"
 import { fetchTrendingAnime ,fetchAnimeByGenre, fetchPopularAnime, fetchUpcomingAnime} from "../lib/tmdb"
 import type { Dispatch, SetStateAction } from 'react';
-
+import { Footer } from "./footer"
+import Scroll from "./scroll"
 
 export const Anime = () =>{
     const [trendingAnime, setTrendingAnime] = useState<Movie[]>([]);
@@ -70,8 +69,6 @@ export const Anime = () =>{
     // }
 
     useEffect(() =>{
-        // const limit = pLimit(2); //max 3 concurrent requests
-
         async function LoadAnimeData(){
             
         setTrendingAnime(await fetchTrendingAnime());
@@ -91,7 +88,7 @@ export const Anime = () =>{
 
         LoadAnimeData();
     },[])
-    const animeCategories :[string, Movie[]][]= [["Trending", trendingAnime], ["Popular", popularAnime],["Top Upcoming ", upcomingAnime], ["Action", actionAnime], ["Adventure", adventureAnime], ["Comedy", comedyAnime], ["Drama", dramaAnime], ["Fantasy", fantasyAnime], ["Science Fiction", scifiAnime], ["Mystery", mysteryAnime], ["Romance", romanceAnime], ["Super Natural", supernaturalAnime], ["Psychological", psychologicalAnime], ["Thriller", thrillerAnime], ["Sports", sportsAnime], ["Historical", historicalAnime], ["Mecha", mechaAnime], ["Martial Arts", martialArtsAnime], ["Magic", magicAnime], ["Slice Of Life", sliceOfLifeAnime], ["Military", militaryAnime],["Earth", earthAnime], ["School Life", schoolLifeAnime], ["Kids", kidsAnime], ["Harem", haremAnime], ["Isekai", isekaiAnime], ["Ecchi", ecchiAnime], ["Yaoi", yaoiAnime], ["Yuri", yuriAnime], ["Shounen", shonenAnime], ["Shoujo", shoujoAnime], ["Seinen", seinenAnime], ["Josei", joseiAnime] , ["Superpower", superPowerAnime] , ["Music", musicAnime]];
+    const animeCategories :[string, Movie[]][]= [["🔥Trending", trendingAnime], ["Popular", popularAnime],["Top Upcoming ", upcomingAnime], ["Action", actionAnime], ["Adventure", adventureAnime], ["Comedy", comedyAnime], ["Drama", dramaAnime], ["Fantasy", fantasyAnime], ["Science Fiction", scifiAnime], ["Mystery", mysteryAnime], ["Romance", romanceAnime], ["Super Natural", supernaturalAnime], ["Psychological", psychologicalAnime], ["Thriller", thrillerAnime], ["Sports", sportsAnime], ["Historical", historicalAnime], ["Mecha", mechaAnime], ["Martial Arts", martialArtsAnime], ["Magic", magicAnime], ["Slice Of Life", sliceOfLifeAnime], ["Military", militaryAnime],["Earth", earthAnime], ["School Life", schoolLifeAnime], ["Kids", kidsAnime], ["Harem", haremAnime], ["Isekai", isekaiAnime], ["Ecchi", ecchiAnime], ["Yaoi", yaoiAnime], ["Yuri", yuriAnime], ["Shounen", shonenAnime], ["Shoujo", shoujoAnime], ["Seinen", seinenAnime], ["Josei", joseiAnime] , ["Superpower", superPowerAnime] , ["Music", musicAnime]];
     
 
     return(
@@ -101,6 +98,8 @@ export const Anime = () =>{
             <div className="border-t-[1.5px] border-cyan-300">
                 <Genres sectionName= "Anime" categories={animeCategories}/>
             </div>
+            <Scroll />
+            <Footer />
         </div>
     )
 }

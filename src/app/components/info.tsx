@@ -4,27 +4,50 @@ import { Movie } from "./interfaces"
 import { Btn } from "./btn"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Seasons } from "./season"
 import { AnimeTypeTvEpisodes } from "./animeTypeTv"
-// import { info } from "console"
 
 interface InfoProps{
-    infoContent:Movie,
+    infoContent:Movie ,
     onClose: () => void;
+    isFromSearch?: boolean;
 }
 
-export const Info = ({infoContent, onClose}: InfoProps ) =>{
+export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =>{
     const [toggleSeasonsModal, setToggleSeasonsModal] = useState<boolean>(false);
     const [toggleAnimeEpisodesModals, setToggleAnimeEpisodesModals] = useState<boolean>(false);
+    const [isInMoviesPage, setIsInMoviesPage] = useState<boolean>(false);
+    const [isInSeriesPage, setIsInSeriesPage] = useState<boolean>(false);
+    const [isInAnimationsPage, setIsInAnimationsPage] = useState<boolean>(false);
+    const [isInAnimePage, setIsInAnimePage] = useState<boolean>(false);
 
     const pathname = usePathname();
 
-    const isInMoviesPage = pathname.startsWith('/pages/movies');
-    const isInSeriesPage = pathname.startsWith('/pages/series');
-    const  isInAnimePage = pathname.startsWith('/pages/anime');
-    const  isInAnimationsPage = pathname.startsWith('/pages/animations');
-    // console.log("Info Content", infoContent);
+    useEffect(() =>{
+        if (isFromSearch){
+            if(infoContent.media_type === 'movie' && !infoContent.genre_ids.includes(16)){
+                setIsInMoviesPage(true);
+              
+            }else if(infoContent.media_type === 'tv' && !infoContent.genre_ids.includes(16)){
+                setIsInSeriesPage(true);
+               
+            }else if (!infoContent.genre_ids.includes(16)){
+                setIsInAnimationsPage(true);
+                
+            }
+        }else{
+        setIsInMoviesPage(pathname.startsWith('/pages/movies'));
+        setIsInSeriesPage(pathname.startsWith('/pages/series'));
+        setIsInAnimePage(pathname.startsWith('/pages/anime'));
+        setIsInAnimationsPage(pathname.startsWith('/pages/animations'));
+        }
+
+    },[])
+
+        // console.log("MediaType:", infoContent.media_type)
+        // console.log("Paths", isInMoviesPage, isInSeriesPage, isInAnimePage, isInAnimationsPage);
+        // console.log('INFO CONTENT:', infoContent);
     return(
         <div className="fixed inset-0 bg-[#00000090] z-50 flex items-center justify-center p-4 cursor-default">
             <div className="bg-[#121212] text-white rounded-lg shadow-lg  w-[60vw] relative">

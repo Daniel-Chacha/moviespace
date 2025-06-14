@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { fetchMediaTypeByGenres, fetchTrendingMediaType } from "../lib/tmdb";
 import { Movie } from "./interfaces";
 import { Footer } from "./footer";
+import Scroll from "./scroll";
 
 export default function Movies(){
     const [trendingContent, setTrendingContent] = useState<Movie[]>([]);
@@ -21,7 +22,7 @@ export default function Movies(){
     const [historyContent, setHistoryContent] = useState<Movie[]>([]);
     const [documentaryContent, setDocumentaryContent] = useState<Movie[]>([]);
 
-    const categories:[string, Movie[]][] = [["Trending ", trendingContent],[ "Action  ", actionContent],["Adventure",  adventureContent], ["Mystery ", mysteryContent],["Crime", crimeContent], ["Thriller", thrillerContent], ["Science Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent],["Drama", dramaContent], ["History ", historyContent], ["Documentary", documentaryContent]]
+    const categories:[string, Movie[]][] = [["🔥 Trending ", trendingContent],[ "Action  ", actionContent],["Adventure",  adventureContent], ["Mystery ", mysteryContent],["Crime", crimeContent], ["Thriller", thrillerContent], ["Science Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent],["Drama", dramaContent], ["History ", historyContent], ["Documentary", documentaryContent]]
 
     useEffect(() =>{
         async function LoadData(){
@@ -50,7 +51,7 @@ export default function Movies(){
             <div className="border-t-[1.5px] border-cyan-300">
                 <Genres sectionName= "Movies" categories={categories}/>
             </div>
-            
+            <Scroll />
             <Footer />
         </div>
     )

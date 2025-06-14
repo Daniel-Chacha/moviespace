@@ -1,5 +1,5 @@
 'use client'
-// import { useState, useEffect } from "react"
+ 
 import { Btn } from "./btn"
 
 interface WarningTextProps{

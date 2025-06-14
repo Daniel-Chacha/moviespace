@@ -4,6 +4,8 @@ import { Header } from "./header"
 import { Genres } from "./genres"
 import { fetchTrendingMediaType, fetchMediaTypeByGenres } from "../lib/tmdb"
 import { Movie } from "./interfaces"
+import { Footer } from "./footer"
+import Scroll from "./scroll"
 
 export const Series =() =>{
         const [popularContent, setPopularContent] = useState<Movie[]>([]);
@@ -20,7 +22,7 @@ export const Series =() =>{
         const [historyContent, setHistoryContent] = useState<Movie[]>([]);
         const [documentaryContent, setDocumentaryContent] = useState<Movie[]>([]);
     
-        const categories:[string, Movie[]][] = [["Trending ", popularContent],[ "Action & Adventure ", actionContent], ["Mystery", mysteryContent],["Crime", crimeContent], ["Reality", realityContent], ["Science Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent],["Drama", dramaContent], ["History ", historyContent], ["Documentary", documentaryContent]]
+        const categories:[string, Movie[]][] = [["🔥Trending ", popularContent],[ "Action & Adventure ", actionContent], ["Mystery", mysteryContent],["Crime", crimeContent], ["Reality", realityContent], ["Science Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent],["Drama", dramaContent], ["History ", historyContent], ["Documentary", documentaryContent]]
     
         useEffect(() =>{
             async function LoadData(){
@@ -43,12 +45,15 @@ export const Series =() =>{
             LoadData();
         },[])
     return(
-        <div>
+        <div className="relative">
             <Header showNavbar={true} />
 
             <div className="border-t-[1.5px] border-cyan-300">
                 <Genres sectionName= "Series" categories={categories}/>
             </div>
+
+            <Scroll />
+            <Footer />
         </div>
     )
 }

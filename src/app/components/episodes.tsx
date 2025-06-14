@@ -51,6 +51,7 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
 
 
     // console.log("Still Path:", episodeData.still_path, episodeData.seasonPath)
+    console.log('Episode Data', episodeData)
     return(
         <div>
             {isInAnimePage ? (

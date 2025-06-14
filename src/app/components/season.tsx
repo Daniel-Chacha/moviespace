@@ -19,7 +19,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
     const [seriesDetails, setSeriesDetails] = useState<TvShowDetails | null>(null);
     const [page, setPage] = useState<number>(1);
     const [seasonDetails, setSeasonDetails] = useState<Episode[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    // const [isLoading, setIsLoading] = useState<boolean>(false);
     const [defaultPosterPath, setDefaultPosterPath] =useState<string>();
     let defaultPath: string;
 
@@ -27,7 +27,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
     const  isInAnimationsPage = pathname?.startsWith('/pages/animations') ?? false;
         
     async function loadSeasonData() {
-        setIsLoading(true);
+        // setIsLoading(true);
         try {
         const details = await fetchSeriesDetail(seriesId);
         setSeriesDetails(details);
@@ -39,7 +39,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
         } catch (err) {
         console.error('loadSeasonData error:', err);
         } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
         }
     }
 
@@ -74,7 +74,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
     }
 
     async function getEpisodes({ seriesId }: { seriesId: number }, { seasonId }: { seasonId: number }, poster_Path: string = defaultPosterPath || defaultPath) {
-        setIsLoading(true);
+        // setIsLoading(true);
         // console.log("Default Poster Path", defaultPosterPath)
         try {
         let results = await fetchSeasonEpisodes(seriesId, seasonId);
@@ -91,9 +91,10 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
         console.error('getEpisodes error:', err);
         setSeasonDetails([]);
         } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
         }
     }
+    // console.log("Series id", seriesId)
     // console.log("Series Data:", seriesDetails);
     // console.log("SeasonData:", seasonDetails);
     return(

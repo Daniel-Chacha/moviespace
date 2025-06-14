@@ -1,22 +1,22 @@
 'use client'
 export  type Movie = {
   adult: boolean;
-  backdrop_path: string ; // Path to the movie's backdrop image
-  genre_ids: number[]; // Array of genre IDs
-  id: number; // Unique ID of the movie
+  backdrop_path: string ;  
+  genre_ids: number[];  
+  id: number; 
   original_language: string;
   original_title: string;
   original_name: string;
-  overview: string; // A brief summary of the movie
+  overview: string;  
   popularity: number;
-  poster_path: string  ; // Path to the movie's poster image
-  release_date: string; // Format: YYYY-MM-DD
+  poster_path: string  ;  
+  release_date: string;  
   first_air_date: string;
   title: string;
   name: string;
   video: boolean;
-  vote_average: number; // Average user rating
-  vote_count: number | null; // Number of votes
+  vote_average: number;  
+  vote_count: number | null;  
   subType: string;
   episodeCount: number;
   media_type: 'movie' | 'tv' | 'person';
@@ -97,19 +97,19 @@ export interface SpokenLanguage {
 
 export interface TvShowDetails {
   adult: boolean;
-  backdrop_path: string | null; // path to the backdrop image
+  backdrop_path: string | null;  
   created_by: CreatedBy[];
-  episode_run_time: number[]; // Array of runtimes in minutes
-  first_air_date: string; // "YYYY-MM-DD"
+  episode_run_time: number[];  
+  first_air_date: string;  
   genres: Genre[];
-  homepage: string; // URL
-  id: number; // TMDb ID for the TV show
+  homepage: string;  
+  id: number; 
   in_production: boolean;
-  languages: string[]; // Array of ISO 639-1 language codes (e.g., ["en"])
-  last_air_date: string; // "YYYY-MM-DD"
-  last_episode_to_air: LastEpisodeToAir | null; // Can be null if no episodes aired yet
-  name: string; // Original name
-  next_episode_to_air: null; // Could be LastEpisodeToAir type if not null, but example shows null
+  languages: string[];  
+  last_air_date: string;  
+  last_episode_to_air: LastEpisodeToAir | null;  
+  name: string;  
+  next_episode_to_air: null; 
   networks: Network[];
   number_of_episodes: number;
   number_of_seasons: number;
@@ -164,21 +164,15 @@ export interface AnimeData {
     romaji: string;
     english: string | null; // English title might not always be present
   };
-  format: 'TV' | 'MOVIE' | 'OVA' | 'ONA' | 'SPECIAL' | 'MUSIC'; // Using specific literal types
+  format: 'TV' | 'MOVIE' | 'OVA' | 'ONA' | 'SPECIAL' | 'MUSIC'; 
   genres: string[];
-  description: string | null; // Description might be null for some entries
+  description: string | null;  
   coverImage: {
     large: string;
-    medium?: string; // Kitsu often has a 'medium' size too, making it optional
+    medium?: string;  
   };
  
 }
-
-
-
-
-
-
 
 
 
@@ -201,61 +195,61 @@ export interface KitsuData<T> {
 // --- Specific Anime Attributes ---
 
 export interface AnimeAttributes {
-  createdAt: string; // Date-time string, e.g., "2015-12-10T23:03:02.734Z"
-  updatedAt: string; // Date-time string, e.g., "2025-06-07T06:23:23.187Z"
-  slug: string; // e.g., "kimi-no-na-wa"
+  createdAt: string;  
+  updatedAt: string;  
+  slug: string;  
   synopsis: string;
   description: string;
   coverImageTopOffset: number; // e.g., 275
   titles: AnimeTitles;
-  canonicalTitle: string; // e.g., "Kimi no Na wa."
-  abbreviatedTitles: string[]; // e.g., []
-  averageRating: string; // e.g., "83.31"
+  canonicalTitle: string;  
+  abbreviatedTitles: string[];  
+  averageRating: string;  
   ratingFrequencies: RatingFrequencies;
-  userCount: number; // e.g., 406934
-  favoritesCount: number; // e.g., 4161
-  startDate: string; // Date string, e.g., "2016-08-26"
-  endDate: string; // Date string, e.g., "2016-08-26"
-  nextRelease: string | null; // Date-time string or null
-  popularityRank: number; // e.g., 8
-  ratingRank: number; // e.g., 55
-  ageRating: string; // e.g., "PG"
-  ageRatingGuide: string; // e.g., "Teens 13 or older"
-  subtype: AnimeSubtype; // "movie", "tv", "ova", "ona", "special", "music", "tv_short"
-  status: string; // e.g., "finished"
-  tba: string | null; // "To Be Announced", can be null
+  userCount: number; 
+  favoritesCount: number; 
+  startDate: string;  
+  endDate: string; 
+  nextRelease: string | null;  
+  popularityRank: number;  
+  ratingRank: number;  
+  ageRating: string;  
+  ageRatingGuide: string; 
+  subtype: AnimeSubtype; 
+  status: string;  
+  tba: string | null; 
   posterImage: ImageSet;
-  coverImage: ImageSet | null; // Can be null for some entries
-  episodeCount: number; // e.g., 1
-  episodeLength: number; // in minutes, e.g., 106
-  totalLength: number; // in minutes, e.g., 106
-  youtubeVideoId: string | null; // YouTube video ID, e.g., "3KR8_igDs1Y" or null
-  showType: AnimeSubtype; // Same as subtype, "movie", "tv", etc.
-  nsfw: boolean; // Not Safe For Work, e.g., false
+  coverImage: ImageSet | null; 
+  episodeCount: number;  
+  episodeLength: number;  
+  totalLength: number;  
+  youtubeVideoId: string | null;  
+  showType: AnimeSubtype;  
+  nsfw: boolean;  
 }
 
 export type AnimeSubtype = "movie" | "tv" | "ova" | "ona" | "special" | "music" | "tv_short";
 
 export interface AnimeTitles {
-  en?: string; // Optional English title, e.g., "Your Name."
-  en_jp?: string; // Optional Romaji English title, e.g., "Kimi no Na wa."
-  en_us?: string; // Optional US English title, e.g., "Your Name."
-  ja_jp?: string; // Optional Japanese title, e.g., "君の名は。"
+  en?: string;  
+  en_jp?: string;  
+  en_us?: string;  
+  ja_jp?: string;  
   // Kitsu API can have other language codes too, but these are common
   [key: string]: string | undefined;
 }
 
 export interface RatingFrequencies {
   // Keys are rating values (2, 3, ..., 20), values are counts
-  [key: string]: string; // Using string for count as per your data "11519"
+  [key: string]: string;  
 }
 
 export interface ImageSet {
-  tiny: string; // URL to tiny image
-  large: string; // URL to large image
-  small: string; // URL to small image
-  medium: string; // URL to medium image
-  original: string; // URL to original image
+  tiny: string;  
+  large: string;  
+  small: string;  
+  medium: string; 
+  original: string;  
   meta: ImageMeta;
 }
 
@@ -267,7 +261,7 @@ export interface ImageDimensions {
   tiny: ImageSize;
   large: ImageSize;
   small: ImageSize;
-  medium?: ImageSize; // 'medium' might not always be present for coverImage
+  medium?: ImageSize;  
 }
 
 export interface ImageSize {

@@ -4,12 +4,15 @@ import { debounce } from "lodash";
 import { Movie } from "./interfaces";
 import { searchTmdb } from "../lib/tmdb";
 import Image from "next/image";
+import { Info } from "./info";
 
 export const SearchTmDb =() =>{
     const [query, setQuery] = useState<string>('');
     const [results, setResults] =useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
+    const [toggleInfoModal , setToggleInfoModal] = useState<boolean>(false);
+    const [selectedContent, setSelectedContent] = useState<Movie | null>(null);
+    // let selectedContent:Movie;
 
     //Debounced search function
     const debouncedSearch = useCallback(
@@ -30,6 +33,13 @@ export const SearchTmDb =() =>{
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
         setQuery(e.target.value);
     }
+    
+
+    const handleSelectedSearchOption = (itemInfo: Movie) => {
+    setSelectedContent(itemInfo); // Set the clicked item
+    setToggleInfoModal(true);    // Open the modal
+  };
+
 
     return(
         <div className="relative ">
@@ -43,10 +53,10 @@ export const SearchTmDb =() =>{
             {results.length > 0 && !isLoading &&(
                 <div className="absolute top-full left-[-50px] w-[340px] bg-[#121212] text-white rounded-md shadow-lg mt-2 mr-5 max-h-96 overflow-y-auto z-50">
                     {results.map((item) =>(
-                        <div key={item.id} className="flex gap-2 p-2 hover:bg-cyan-900 cursor-pointer ">
+                        <div onClick={() => handleSelectedSearchOption(item)} key={item.id} className="flex gap-2 p-2 hover:bg-cyan-900 cursor-pointer ">
                             <div className="relative w-12 h-18">
                                 <Image
-                                    src={item.poster_path || item.backdrop_path}
+                                    src={item.poster_path || item.backdrop_path || '/images/fallbackPik.png'}
                                     alt={item.title ||item.name }
                                     fill                                     
                                     className="rounded object-cover" // Other styles
@@ -60,8 +70,13 @@ export const SearchTmDb =() =>{
                                     {item.release_date || item.first_air_date}
                                 </p>
                             </div>
-                            
+
+                            {/* {toggleInfoModal &&(
+                                <Info infoContent={item} onClose={()=>setToggleInfoModal(false)}  isFromSearch={true }/>
+                            )} */}
+                                            
                         </div>
+                        
                     ))}
                 </div>
             )}
@@ -70,6 +85,10 @@ export const SearchTmDb =() =>{
                 <div className="absolute top-full left-0 w-fit bg-[#121212] text-white rounded-md shadow-lg mt-2 p-2">
                     No Results Found.
                 </div>
+            )}
+
+            {toggleInfoModal && selectedContent && (
+                <Info infoContent={selectedContent} onClose={() => setToggleInfoModal(false)} isFromSearch={true} />
             )}
         </div>
     )

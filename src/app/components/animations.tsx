@@ -1,8 +1,9 @@
 'use client'
 
 import { Header } from "./header"
-// import { useState, useEffect } from "react"
 import { LongAnimations } from "./longAnimations"
+import { Footer } from "./footer"
+import Scroll from "./scroll"
 
 export const Animations = () =>{
 
@@ -16,6 +17,8 @@ export const Animations = () =>{
                     <LongAnimations />
                  </div>
             </div>
+            <Scroll />
+            <Footer />
         </div>
     )
 }
