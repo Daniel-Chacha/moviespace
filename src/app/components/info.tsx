@@ -84,7 +84,7 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
                 <div className="flex flex-row justify-around mb-3">
                     <Btn label={"Cancel"} method={onClose} />
                     {isInMoviesPage &&(
-                        <Link href={`/pages/movies/${infoContent.id}`}>
+                        <Link href={`/pages/movies/${String(infoContent.id)}`}>
                             <Btn label={"Watch"} method={onClose} />
                         </Link>
                     )}
@@ -97,7 +97,7 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
 
                     {isInAnimePage && (
                         (infoContent.subType === 'movie' || infoContent.episodeCount === 1 ) ?
-                            <Link href={`/pages/anime/${infoContent.id}`}>
+                            <Link href={`/pages/anime/${String(infoContent.id)}`}>
                                 <Btn label={"Watch"} method={onClose} />
                             </Link>
                             // <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming Capability to be Released Soon!</span>

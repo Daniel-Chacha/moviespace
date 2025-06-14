@@ -19,9 +19,9 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
 
     const decideRoute = () =>{
         if(isInSeriesPage){
-            setRoute(`/pages/series/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`);
+            setRoute(`/pages/series/${String(episodeData.show_id)}/${String(episodeData.season_number)}/${String(episodeData.episode_number)}`);
         }else if(isInAnimationsPage){
-            setRoute(`/pages/animations/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`);
+            setRoute(`/pages/animations/${String(episodeData.show_id)}/${String(episodeData.season_number)}/${String(episodeData.episode_number)}`);
         }
         // else if(isInAnimePage){
         //     setRoute(`/pages/anime/${episodeData.id}`);

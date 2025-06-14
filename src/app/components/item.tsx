@@ -35,7 +35,7 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
                 {/* Icons shown only on hover */}
                 <div className="absolute bottom-7 left-0 right-0 flex justify-around opacity-0 group-hover:opacity-100 transition duration-300">
                     {isInMoviesPage && (
-                        <Link href={`/pages/movies/${itemsContent.id}`}>
+                        <Link href={`/pages/movies/${String(itemsContent.id)}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
                         </Link>
                     )}
