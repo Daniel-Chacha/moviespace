@@ -261,6 +261,32 @@ export async function fetchAnimeByGenre(genre: string): Promise<Movie[]> {
 }
 
 
+interface KitsuEpisode {
+  id: string;
+  type: string;
+  attributes: EpisodeAttributes;
+}
+
+interface EpisodeAttributes {
+  airdate: string | null;
+  number: number | null;
+  titles: {
+    en?: string;
+    en_jp?: string;
+    canonicalTitle?: string;
+  };
+  canonicalTitle?: string;
+  synopsis: string | null;
+  thumbnail: {
+    original: string | null;
+  } | null;
+  productionCode: string | null;
+  length: string | number | null;
+  seasonNumber: number | null;
+  averageRating: string | null;
+}
+
+ 
 
 
 export async function fetchAnimeEpisodes(animeId: number, page: number = 1): Promise<EpisodeResponse> {
@@ -282,14 +308,14 @@ export async function fetchAnimeEpisodes(animeId: number, page: number = 1): Pro
 
     const data = await response.json();
     
-    const formattedEpisodes: Episode[] = data.data.map((episode: any) => ({
+    const formattedEpisodes: Episode[] = data.data.map((episode: KitsuEpisode) => ({
       air_date: episode.attributes.airdate || '',
       episode_number: episode.attributes.number || 0,
       id: parseInt(episode.id),
       name: episode.attributes.titles?.en || episode.attributes.titles?.en_jp || episode.attributes.canonicalTitle || '',
       overview: episode.attributes.synopsis || '',
       production_code: episode.attributes.productionCode || '',
-      runtime: episode.attributes.length ? parseInt(episode.attributes.length) : null,
+      runtime:  null,
       season_number: episode.attributes.seasonNumber || 1,
       show_id: animeId,
       still_path: episode.attributes.thumbnail?.original || null,
