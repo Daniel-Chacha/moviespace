@@ -407,3 +407,42 @@ export async function searchTmdb(query: string, page: number = 1): Promise<Searc
   }
 }
 
+
+export async function getTrendingPosterPaths(): Promise<string[]> {
+  const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+  const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w200';
+  const ANIMATION_GENRE_ID = 16;
+
+  try {
+    // Fetch trending movies
+    const movieResponse = await fetch(
+      `${TMDB_BASE_URL}/trending/movie/day?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+    );
+    if (!movieResponse.ok) throw new Error('Failed to fetch trending movies');
+    const movieData = await movieResponse.json();
+    const moviePosterPaths = movieData.results
+      .slice(0, 5) // Get top 5 movies
+      .map((item: Movie) => `${POSTER_BASE_URL}${item.poster_path}` || null)
+      
+      .filter((path: string | null): path is string => path !== null); // Filter out null paths
+ 
+    // Fetch trending TV shows
+    const tvResponse = await fetch(
+      `${TMDB_BASE_URL}/trending/tv/day?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+    );
+    if (!tvResponse.ok) throw new Error('Failed to fetch trending TV shows');
+    const tvData = await tvResponse.json();
+    const animationPosterPaths = tvData.results
+      .filter((item: Movie) => item.genre_ids.includes(ANIMATION_GENRE_ID)) // Filter for animations
+      .slice(0, 3) // Get top 3 animations
+      .map((item: Movie) => `${POSTER_BASE_URL}${item.poster_path}` || null)
+      .filter((path: string | null): path is string => path !== null); // Filter out null paths
+ 
+    // Combine and return all poster paths
+    return [...moviePosterPaths, ...animationPosterPaths];
+  } catch (error) {
+    console.error('Error fetching trending poster paths:', error);
+    return []; // Return empty array on error
+  }
+}
+
