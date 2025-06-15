@@ -23,21 +23,24 @@
 // }
 
 
-'use client';
+// 'use client';
 import { Screen } from "@/src/app/components/screen";
 
-export default function ScreenPage({
+export default async function ScreenPage({
   params,
 }: {
-  params: {
+  params: Promise< {
     series_id: string;
     season_number: string;
     episode_number: string;
-  };
+  }>;
 }) {
-  const seriesId = parseInt(params.series_id);
-  const seasonNumber = parseInt(params.season_number, 10);
-  const episodeNumber = parseInt(params.episode_number);
+
+  //Await the params since it's now a promise
+  const resolvedParams = await params;
+  const seriesId = parseInt(resolvedParams.series_id);
+  const seasonNumber = parseInt(resolvedParams.season_number, 10);
+  const episodeNumber = parseInt(resolvedParams.episode_number);
 
   // Fix URL syntax (replace placeholder with actual endpoint)
   const url =`https://vidsrc.xyz/embed/tv/${seriesId}/${seasonNumber}/${episodeNumber}`; // Replace with your API URL

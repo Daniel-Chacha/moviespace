@@ -1,12 +1,13 @@
 import { Screen } from "@/src/app/components/screen";
 
 type PageProps={
-    params:{
+    params: Promise<{
         id: string;
-    }
+    }>
 }
-export default  function ScreenPage({params}: PageProps){
-    const Id = parseInt(params.id, 10); //converts string to number
+export default async function ScreenPage({params}: PageProps){
+    const resolvedParams = await params;
+    const Id = parseInt(resolvedParams.id, 10); //converts string to number
     const url= `https://vidsrc.xyz/embed/movie/${Id}/`
     console.log("Movie ID:", Id)
 
