@@ -19,7 +19,7 @@ const italianno = Italianno({
 })
 
 export const metadata: Metadata = {
-  title: "Movie Space",
+  title: "Movie Prime",
   description: "A website for watching movies series , anime and animations",
 };
 

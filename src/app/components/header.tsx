@@ -16,7 +16,7 @@ export const Header = ({showTitle= false ,showNavbar= false}) =>{
             </Link>
 
             {showTitle &&(
-                <h1 className="text-8xl italianno">MovieSpace</h1>
+                <h1 className="text-8xl italianno">MoviePrime</h1>
             )}
 
             {showNavbar && (
