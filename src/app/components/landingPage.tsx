@@ -23,7 +23,7 @@ export const  LandingPage =() =>{
                 </div>
             </div>
 
-            <Footer />
+            <div className="fixed bottom-0 w-full"> <Footer /> </div>
         </div>
     )
 }
