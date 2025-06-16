@@ -25,7 +25,7 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
     : '/images/fallback.jpg';
     return(
        
-        <div className="group relative w-[120px] h-[180px] flex-shrink-0 cursor-pointer" >
+        <div onClick={()=> setToggleInfoModal(!toggleInfoModal)} className="group relative w-[120px] h-[180px] flex-shrink-0 cursor-pointer" >
             {/* Image with dark hover overlay */}
             <div className="relative w-full h-full">
                 <Image

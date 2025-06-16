@@ -50,7 +50,7 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
         // console.log('INFO CONTENT:', infoContent);
     return(
         <div className="fixed inset-0 bg-[#00000090] z-50 flex items-center justify-center p-4 cursor-default">
-            <div className="bg-[#121212] text-white rounded-lg shadow-lg  w-[60vw] relative">
+            <div className="bg-[#121212] text-white rounded-lg shadow-lg max-md:w-[99vw]  w-[60vw] relative">
 
                 <div className="flex flex-row gap-4 justify-around">
                     {/* Image Section */}

@@ -43,7 +43,7 @@ export const SearchTmDb =() =>{
 
     return(
         <div className="relative ">
-            <input className="border-[1px]  border-cyan-300 pl-3 rounded-md w-full bg-[#121212] text-white focus:outline-none focus:ring-2 focus:ring-cyan-300" type="search" name="Search" id="Search" placeholder="Search ..." value={query} onChange={handleInputChange} />
+            <input className="border-[1px]  border-cyan-300 pl-3 rounded-md max-sm:w-[90%] w-full bg-[#121212] text-white focus:outline-none focus:ring-2 focus:ring-cyan-300" type="search" name="Search" id="Search" placeholder="Search ..." value={query} onChange={handleInputChange} />
 
             {isLoading &&(
                 <div className="absolute top-full left-0 w-fit bg-[#121212] text-white rounded-md shadow-lg mt-2 p-2">Loading...

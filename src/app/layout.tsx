@@ -20,7 +20,7 @@ const italianno = Italianno({
 
 export const metadata: Metadata = {
   title: "Movie Prime",
-  description: "A website for watching movies series , anime and animations",
+  description: "A website for watching movies ,series , anime and animations",
 };
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${italianno.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${italianno.variable} antialiased `}
       >
         {children}
       </body>

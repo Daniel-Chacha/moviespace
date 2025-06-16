@@ -17,8 +17,8 @@ const ImageCarousel = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center ">
-      <div className=" relative transform-style-preserve-3d perspective-1000 animation-gallery cursor-pointer  ">
+    <div className="flex justify-center items-center max-sm:mt-0 max-lg:mt-10">
+      <div className=" relative transform-style-preserve-3d perspective-5000 animation-gallery cursor-pointer  ">
         {images.map((item, index) => (
           <span
             key={index}
@@ -28,7 +28,7 @@ const ImageCarousel = () => {
               transform: `rotateY(calc(var(--i) * 45deg)) translateZ(300px)`,
             } as React.CSSProperties}
           >
-            <div className="   h-[150px] w-[100px]  absolute rounded-lg border-[6px] border-ridge border-[#ccc]"></div>
+            <div className="h-[150px] w-[100px]  absolute rounded-lg border-[6px] border-ridge border-[#ccc]"></div>
             <Image
               src={item} // Use the poster path string directly
               alt={`Gallery item ${index + 1}`}
