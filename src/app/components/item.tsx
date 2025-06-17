@@ -25,7 +25,7 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
     : '/images/fallback.jpg';
     return(
        
-        <div onClick={()=> setToggleInfoModal(!toggleInfoModal)} className="group relative w-[120px] h-[180px] flex-shrink-0 cursor-pointer" >
+        <div onClick={()=> setToggleInfoModal(true)} className="group relative w-[120px] h-[180px] flex-shrink-0 cursor-pointer" >
             {/* Image with dark hover overlay */}
             <div className="relative w-full h-full">
                 <Image
@@ -40,7 +40,7 @@ export const Item = ({itemsContent}:{itemsContent:Movie}) =>{
                         </Link>
                     )}
                     {(isInSeriesPage || isInAnimationsPage )&&(
-                        <svg onClick={() => setToggleSeasonsModal(!toggleSeasonsModal)} xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
+                        <svg onClick={() => setToggleSeasonsModal(true)} xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24" > <path  fill="#4DD0E1" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18M10.783 7.99l5.644 3.136a1 1 0 0 1 0 1.748l-5.644 3.136A1.2 1.2 0 0 1 9 14.96V9.04a1.2 1.2 0 0 1 1.783-1.05" clipRule="evenodd" /> </svg>
                     )}
 
                     {isInAnimePage &&(

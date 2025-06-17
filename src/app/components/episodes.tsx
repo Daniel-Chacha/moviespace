@@ -51,7 +51,7 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
 
 
     // console.log("Still Path:", episodeData.still_path, episodeData.seasonPath)
-    console.log('Episode Data', episodeData)
+    // console.log('Episode Data', episodeData)
     return(
         <div>
             {isInAnimePage ? (
@@ -59,7 +59,7 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
                     <span className="text-3xl">{episodeData.episode_number}</span>
                     <div className="w-32 h-32 relative rounded-t-lg flex-shrink-0">
                         <Image className="object-cover rounded" src={ checkPath? `https://image.tmdb.org/t/p/w500${episodeData.still_path}` :episodeData.still_path } 
-                        fill alt={episodeData.name} />
+                        fill alt={episodeData.name || episodeData.air_date|| "episode"} />
                     </div>
 
                     <div>

@@ -48,7 +48,11 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
         // console.log("MediaType:", infoContent.media_type)
         // console.log("Paths", isInMoviesPage, isInSeriesPage, isInAnimePage, isInAnimationsPage);
         // console.log('INFO CONTENT:', infoContent);
-    return(
+        // useEffect(() =>{
+        //     console.log("Paths", isInMoviesPage, isInSeriesPage, isInAnimePage, isInAnimationsPage);
+        // },[])
+
+    return( 
         <div className="fixed inset-0 bg-[#00000090] z-50 flex items-center justify-center p-4 cursor-default">
             <div className="bg-[#121212] text-white rounded-lg shadow-lg max-md:w-[99vw]  w-[60vw] relative">
 
@@ -83,16 +87,16 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
 
                 <div className="flex flex-row justify-around mb-3">
                     <Btn label={"Cancel"} method={onClose} />
+
                     {isInMoviesPage &&(
                         <Link href={`/pages/movies/${String(infoContent.id)}`}>
                             <Btn label={"Watch"} method={onClose} />
                         </Link>
                     )}
 
-                    {isInSeriesPage &&(
-                        <span onClick={() => setToggleSeasonsModal(true)}>
-                            <Btn  label={"Watch"} method={() => setToggleSeasonsModal(true) } />
-                        </span>                                 
+                    {isInSeriesPage &&(                      
+                            <Btn  label={"Watch"} method={(e) => {e.stopPropagation(); setToggleAnimeEpisodesModals(true);}} />
+                                                  
                     )}
 
                     {isInAnimePage && (
@@ -102,20 +106,17 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
                             </Link>
                             // <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming Capability to be Released Soon!</span>
                         :
-                            infoContent.vote_average ?
-                            <span >
-                                <Btn  label={"Watch"} method={() => setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals)} />
-                                 {/* <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">Streaming functionality to be Released Soon!</span> */}
-                            </span>  
+                            infoContent.vote_average ?                           
+                                <Btn  label={"Watch"} method={(e) =>{e.stopPropagation(); setToggleAnimeEpisodesModals(!toggleAnimeEpisodesModals);}} />                                                        
                             :
-                            <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">To Be Released!</span>
+                                <span className="cursor-default font-semibold bg-[#120932] p-3 text-cyan-300 border-2 border-red-600 ">To Be Released!</span>
                      
                     )}
 
                     {isInAnimationsPage &&(
-                        <span onClick={() => setToggleSeasonsModal(true)}>
-                            <Btn  label={"Watch"} method={() => setToggleSeasonsModal(true) } />
-                        </span>   
+                        // <span onClick={handleWatchClick} >
+                            <Btn  label={"Watch"} method={(e) =>{e.stopPropagation(); setToggleSeasonsModal(true);}} />
+                        // </span>   
                     )}
 
                     

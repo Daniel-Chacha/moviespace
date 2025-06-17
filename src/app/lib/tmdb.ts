@@ -324,8 +324,8 @@ export async function fetchAnimeEpisodes(animeId: number, page: number = 1): Pro
     }));
 
     const nextPage = data.links?.next ? page + 1 : null;
-    console.log("Raw Episode Data:", data.data )
-    console.log("Formatted Episodes:", formattedEpisodes);
+    // console.log("Raw Episode Data:", data.data )
+    // console.log("Formatted Episodes:", formattedEpisodes);
     return { episodes: formattedEpisodes, nextPage };
   } catch (error) {
     console.error(`Error fetching episodes for anime ID ${animeId} from Kitsu API:`, error);
