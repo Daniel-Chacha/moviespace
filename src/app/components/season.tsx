@@ -30,8 +30,9 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
         // setIsLoading(true);
         try {
         const details = await fetchSeriesDetail(seriesId);
-        console.log("Details", details)
+        // console.log("Details", details)
         setSeriesDetails(details);
+
         if (details?.id) {
              defaultPath = details.poster_path;
             setDefaultPosterPath(defaultPath);
@@ -50,7 +51,6 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
             setSeasonDetails([]);
             loadSeasonData();
         }
-
     }, [seriesId])
 
     const handlePrev = () =>{
@@ -80,7 +80,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
         try {
         let results = await fetchSeasonEpisodes(seriesId, seasonId);
         if (isInAnimationsPage && poster_Path) {
-            console.log("Poster path:", poster_Path)
+            // console.log("Poster path:", poster_Path)
             results = results.map((episode: Episode) => ({
             ...episode,
             seasonPath: poster_Path,
@@ -96,9 +96,9 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
         }
     }
     // console.log("Rendered")
-    console.log("Series id:", seriesId);
-    console.log("Series Data:", seriesDetails);
-    console.log("SeasonData:", seasonDetails);
+    // console.log("Series id:", seriesId);
+    // console.log("Series Data:", seriesDetails);
+    // console.log("SeasonData:", seasonDetails);
     return(
         <div className="fixed inset-0 bg-[#00000090] z-[60] flex justify-center items-center cursor-default">
             <div className="bg-[#121212] text-white shadow-lg rounded-lg w-[90vw] relative h-[90vh] overflow-auto px-8">
@@ -106,8 +106,8 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
                 <div className="flex gap-4 mt-3 flex-wrap text-white">
                         {/* Image section */}
                         <div className="w-32 h-44 relative rounded-lg flex-shrink-0">
-                            <Image className="object-cover rounded" src={ seriesDetails?.poster_path ? `https://image.tmdb.org/t/p/w500${seriesDetails.poster_path}` : '/fallback.jpg' } 
-                            fill alt= "Poster" />
+                            <Image className="object-cover rounded" alt={seriesDetails?.name ? seriesDetails.name : "Series title"} src={ seriesDetails?.poster_path ? `https://image.tmdb.org/t/p/w500${seriesDetails.poster_path}` : '/images/fallbackPik.png' } 
+                            fill  />
                         </div>
 
                         {/* Text section */}

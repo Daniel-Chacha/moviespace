@@ -95,7 +95,7 @@ export const Info = ({infoContent, onClose, isFromSearch = false}: InfoProps ) =
                     )}
 
                     {isInSeriesPage &&(                      
-                            <Btn  label={"Watch"} method={(e) => {e.stopPropagation(); setToggleAnimeEpisodesModals(true);}} />
+                            <Btn  label={"Watch"} method={(e) => {e.stopPropagation(); setToggleSeasonsModal(true);}} />
                                                   
                     )}
 

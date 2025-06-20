@@ -77,7 +77,7 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
                         </div>
 
                         <div>
-                            <h3>{episodeData.name}</h3>
+                            <h3 className="font-semibold text-cyan-300">{episodeData.name}</h3>
                             <p>{episodeData.overview}</p>
                         </div>
                     </div>

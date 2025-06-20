@@ -97,7 +97,7 @@ export interface SpokenLanguage {
 
 export interface TvShowDetails {
   adult: boolean;
-  backdrop_path: string | null;  
+  backdrop_path: string  ;  
   created_by: CreatedBy[];
   episode_run_time: number[];  
   first_air_date: string;  
