@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'media.kitsu.app',
       },
+      {
+        protocol: 'https',
+        hostname: 'kitsu-production-media.s3.us-west-002.backblazeb2.com',
+      },
     ],
   },
 };

@@ -1,4 +1,3 @@
-'use client'
 export  type Movie = {
   adult: boolean;
   backdrop_path: string ;  

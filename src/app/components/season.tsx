@@ -24,7 +24,7 @@ export const Seasons = ({seriesId ,onClose}: SeasonsProps) =>{
     let defaultPath: string;
 
     const pathname = usePathname();
-    const  isInAnimationsPage = pathname?.startsWith('/pages/animations') ?? false;
+    const  isInAnimationsPage = pathname?.startsWith('/animations') ?? false;
         
     async function loadSeasonData() {
         // setIsLoading(true);

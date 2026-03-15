@@ -13,15 +13,15 @@ export const Episodes =({episodeData}:{episodeData: Episode}) =>{
 
     const pathname = usePathname();
 
-    const isInSeriesPage = pathname.startsWith('/pages/series');
-    const  isInAnimationsPage = pathname.startsWith('/pages/animations');
-    const  isInAnimePage = pathname.startsWith('/pages/anime');
+    const isInSeriesPage = pathname.startsWith('/series');
+    const  isInAnimationsPage = pathname.startsWith('/animations');
+    const  isInAnimePage = pathname.startsWith('/anime');
 
     const decideRoute = () =>{
         if(isInSeriesPage){
-            setRoute(`/pages/series/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`);
+            setRoute(`/series/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`);
         }else if(isInAnimationsPage){
-            setRoute(`/pages/animations/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`);
+            setRoute(`/animations/${episodeData.show_id}/${episodeData.season_number}/${episodeData.episode_number}`);
         }
         // else if(isInAnimePage){
         //     setRoute(`/pages/anime/${episodeData.id}`);

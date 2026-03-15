@@ -1,58 +1,45 @@
 'use client'
 import { Header } from "./header"
 import { Genres } from "./genres"
-import { useState, useEffect } from "react"
-import { fetchMediaTypeByGenres, fetchTrendingMediaType } from "../lib/tmdb";
-import { Movie } from "./interfaces";
-import { Footer } from "./footer";
-import Scroll from "./scroll";
+import { Footer } from "./footer"
+import Scroll from "./scroll"
+import { useGenreCategories } from "../hooks/useGenreCategories"
+import { fetchMediaTypeByGenres, fetchTrendingMediaType } from "../lib/tmdb"
+import { TMDB_MOVIE_GENRES } from "../lib/constants"
 
-export default function Movies(){
-    const [trendingContent, setTrendingContent] = useState<Movie[]>([]);
-    const [actionContent, setActionContent] = useState<Movie[]>([]);
-    const [adventureContent, setAdventureContent] = useState<Movie[]>([]);
-    const [mysteryContent, setMysteryContent] = useState<Movie[]>([]);
-    const [crimeContent, setCrimeContent] = useState<Movie[]>([]);
-    const [thrillerContent, setThrillerContent] = useState<Movie[]>([]);
-    const [fictionContent, setFictionContent] = useState<Movie[]>([]);
-    const [comedyContent, setComedyContent] = useState<Movie[]>([]);
-    const [warContent, setWarContent] = useState<Movie[]>([]);
-    const [romanceContent, setRomanceContent] = useState<Movie[]>([]);
-    const [dramaContent, setDramaContent] = useState<Movie[]>([]);
-    const [historyContent, setHistoryContent] = useState<Movie[]>([]);
-    const [documentaryContent, setDocumentaryContent] = useState<Movie[]>([]);
+const MOVIE_CONFIGS = [
+  { label: '🔥 Trending',      fetcher: () => fetchTrendingMediaType('trending/movie/week') },
+  { label: 'Action',           fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.ACTION, 'movie') },
+  { label: 'Adventure',        fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.ADVENTURE, 'movie') },
+  { label: 'Mystery',          fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.MYSTERY, 'movie') },
+  { label: 'Crime',            fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.CRIME, 'movie') },
+  { label: 'Thriller',         fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.THRILLER, 'movie') },
+  { label: 'Science Fiction',  fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.SCIENCE_FICTION, 'movie') },
+  { label: 'Comedy',           fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.COMEDY, 'movie') },
+  { label: 'War',              fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.WAR, 'movie') },
+  { label: 'Romance',          fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.ROMANCE, 'movie') },
+  { label: 'Drama',            fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.DRAMA, 'movie') },
+  { label: 'History',          fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.HISTORY, 'movie') },
+  { label: 'Documentary',      fetcher: () => fetchMediaTypeByGenres(TMDB_MOVIE_GENRES.DOCUMENTARY, 'movie') },
+];
 
-    const categories:[string, Movie[]][] = [["🔥 Trending ", trendingContent],[ "Action  ", actionContent],["Adventure",  adventureContent], ["Mystery ", mysteryContent],["Crime", crimeContent], ["Thriller", thrillerContent], ["Science Fiction ", fictionContent], ["Comedy ", comedyContent], ["War ", warContent], ["Romance ", romanceContent],["Drama", dramaContent], ["History ", historyContent], ["Documentary", documentaryContent]]
+export default function Movies() {
+  const { categories, isLoading, error } = useGenreCategories(MOVIE_CONFIGS);
 
-    useEffect(() =>{
-        async function LoadData(){
-            setTrendingContent(await fetchTrendingMediaType("trending/movie/week"));
-            setActionContent(await fetchMediaTypeByGenres(28, "movie"));
-            setAdventureContent(await fetchMediaTypeByGenres(12, "movie"));
-            setMysteryContent(await fetchMediaTypeByGenres(9648, "movie"));
-            setCrimeContent(await fetchMediaTypeByGenres(80, "movie"));
-            setThrillerContent(await fetchMediaTypeByGenres(53, "movie"));
-            setFictionContent(await fetchMediaTypeByGenres(878, "movie"));
-            setComedyContent(await fetchMediaTypeByGenres(35, "movie"));
-            setWarContent(await fetchMediaTypeByGenres(10752, "movie"));
-            setRomanceContent(await fetchMediaTypeByGenres(10749, "movie"));
-            setDramaContent(await fetchMediaTypeByGenres(18, "movie"));
-            setHistoryContent(await fetchMediaTypeByGenres(36, "movie"));
-            setDocumentaryContent(await fetchMediaTypeByGenres(99, "movie"));
-            
-        }
-
-        LoadData();
-    },[])
-    return(
-        <div>
-            <Header showNavbar={true} />
-
-            <div className="border-t-[1.5px] border-cyan-300">
-                <Genres sectionName= "Movies" categories={categories}/>
-            </div>
-            <Scroll />
-            <Footer />
-        </div>
-    )
+  return (
+    <div>
+      <Header showNavbar={true} />
+      <div className="border-t-[1.5px] border-cyan-300">
+        <Genres
+          sectionName="Movies"
+          categories={categories}
+          mediaType="movie"
+          isLoading={isLoading}
+          error={error}
+        />
+      </div>
+      <Scroll />
+      <Footer />
+    </div>
+  );
 }

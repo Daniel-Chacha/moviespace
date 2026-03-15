@@ -1,0 +1,71 @@
+export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
+export const KITSU_BASE_URL = 'https://kitsu.io/api/edge';
+
+export const TMDB_MOVIE_GENRES = {
+  ACTION: 28,
+  ADVENTURE: 12,
+  MYSTERY: 9648,
+  CRIME: 80,
+  THRILLER: 53,
+  SCIENCE_FICTION: 878,
+  COMEDY: 35,
+  WAR: 10752,
+  ROMANCE: 10749,
+  DRAMA: 18,
+  HISTORY: 36,
+  DOCUMENTARY: 99,
+} as const;
+
+export const TMDB_TV_GENRES = {
+  ACTION_ADVENTURE: 10759,
+  MYSTERY: 9648,
+  CRIME: 80,
+  REALITY: 10764,
+  SCIENCE_FICTION: 10765,
+  COMEDY: 35,
+  WAR: 10768,
+  ROMANCE: 10749,
+  DRAMA: 18,
+  HISTORY: 36,
+  DOCUMENTARY: 99,
+  ANIMATION: 16,
+  FAMILY: 10751,
+  KIDS: 10762,
+} as const;
+
+export const ANIME_GENRE_LIST = [
+  { key: 'action', label: 'Action' },
+  { key: 'adventure', label: 'Adventure' },
+  { key: 'comedy', label: 'Comedy' },
+  { key: 'drama', label: 'Drama' },
+  { key: 'fantasy', label: 'Fantasy' },
+  { key: 'science-fiction', label: 'Science Fiction' },
+  { key: 'mystery', label: 'Mystery' },
+  { key: 'romance', label: 'Romance' },
+  { key: 'supernatural', label: 'Super Natural' },
+  { key: 'psychological', label: 'Psychological' },
+  { key: 'thriller', label: 'Thriller' },
+  { key: 'sports', label: 'Sports' },
+  { key: 'historical', label: 'Historical' },
+  { key: 'mecha', label: 'Mecha' },
+  { key: 'martial-arts', label: 'Martial Arts' },
+  { key: 'magic', label: 'Magic' },
+  { key: 'slice-of-life', label: 'Slice Of Life' },
+  { key: 'military', label: 'Military' },
+  { key: 'earth', label: 'Earth' },
+  { key: 'school-life', label: 'School Life' },
+  { key: 'kids', label: 'Kids' },
+  { key: 'harem', label: 'Harem' },
+  { key: 'isekai', label: 'Isekai' },
+  { key: 'ecchi', label: 'Ecchi' },
+  { key: 'yaoi', label: 'Yaoi' },
+  { key: 'yuri', label: 'Yuri' },
+  { key: 'shounen', label: 'Shounen' },
+  { key: 'shoujo', label: 'Shoujo' },
+  { key: 'seinen', label: 'Seinen' },
+  { key: 'josei', label: 'Josei' },
+  { key: 'super-power', label: 'Superpower' },
+  { key: 'music', label: 'Music' },
+] as const;
+
+export type MediaType = 'movie' | 'series' | 'anime' | 'animation';

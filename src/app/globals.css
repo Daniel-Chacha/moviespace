@@ -55,23 +55,12 @@ body {
   -webkit-box-reflect: below 2.5px linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.2));
 }
 
-/* Tailwind-compatible custom scrollbar styles */
-.custom-scrollbar::-webkit-scrollbar {
-  height: 6px; /* Smaller scrollbar height */
+/* Hide scrollbars on category rows (arrows handle navigation) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: black; /* Black background */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: gray; /* Scroll thumb */
-  border-radius: 3px;
-}
-
-/* Firefox */
-/* .custom-scrollbar {
-  scrollbar-color: gray black;
-  scrollbar-width: thin;
-} */
 
