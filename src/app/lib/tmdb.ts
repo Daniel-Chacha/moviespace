@@ -209,6 +209,12 @@ function mapKitsuToMovie(anime: KitsuAnimeResponse): Movie {
       anime.attributes.titles?.en ||
       anime.attributes.titles?.en_jp ||
       '',
+    original_name:
+      anime.attributes.titles?.en_jp ||
+      anime.attributes.titles?.ja_jp ||
+      anime.attributes.canonicalTitle ||
+      '',
+    media_type: 'tv' as const,
     video: false,
     vote_average: anime.attributes.averageRating
       ? parseFloat(anime.attributes.averageRating) / 10

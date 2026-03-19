@@ -1,47 +1,49 @@
 'use client'
 
-const SKELETON_WIDTHS = [120, 100, 130, 110, 125, 115, 105, 120, 130, 110, 120, 100];
+const SKELETON_WIDTHS = [
+  120, 105, 130, 115, 125, 110, 120, 100,
+  130, 115, 105, 125, 110, 120, 100, 130,
+];
 
 export const CategorySkeleton = () => {
   return (
-    <>
+    // Wrapper is the full combined width of all cards — the shimmer travels across it
+    <div className="relative flex flex-row gap-4 flex-shrink-0 overflow-hidden">
+
       {SKELETON_WIDTHS.map((width, i) => (
         <div
           key={i}
-          className="h-[180px] flex-shrink-0 rounded-md overflow-hidden relative"
-          style={{
-            width: `${width}px`,
-            animationDelay: `${i * 120}ms`,
-          }}
-        >
-          {/* Base dark background */}
-          <div className="absolute inset-0 bg-gray-800" />
-
-          {/* Shimmer sweep — each card has its own delay so they pulse independently */}
-          <div
-            className="absolute inset-0 shimmer-sweep"
-            style={{ animationDelay: `${i * 120}ms` }}
-          />
-        </div>
+          className="h-[180px] flex-shrink-0 rounded-md bg-gray-700"
+          style={{ width: `${width}px` }}
+        />
       ))}
 
+      {/* Single wave that travels from the first element to the last */}
+      <div className="shimmer-wave" />
+
       <style>{`
-        @keyframes shimmer {
-          0%   { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
+        @keyframes skeleton-wave {
+          0%   { left: -25%; }
+          100% { left: 110%; }
         }
-        .shimmer-sweep {
+        .shimmer-wave {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 20%;
           background: linear-gradient(
             90deg,
             transparent 0%,
-            rgba(103, 232, 249, 0.08) 40%,
-            rgba(103, 232, 249, 0.18) 50%,
-            rgba(103, 232, 249, 0.08) 60%,
+            rgba(156, 163, 175, 0.12) 30%,
+            rgba(209, 213, 219, 0.28) 50%,
+            rgba(156, 163, 175, 0.12) 70%,
             transparent 100%
           );
-          animation: shimmer 1.6s ease-in-out infinite;
+          animation: skeleton-wave 2.2s ease-in-out infinite;
+          pointer-events: none;
+          border-radius: 4px;
         }
       `}</style>
-    </>
+    </div>
   );
 };
