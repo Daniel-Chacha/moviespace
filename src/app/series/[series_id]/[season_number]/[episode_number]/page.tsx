@@ -1,4 +1,4 @@
-import { Screen } from "@/src/app/components/screen";
+import { EpisodeScreen } from "@/src/app/components/episodeScreen";
 
 type PageProps = {
     params: Promise<{
@@ -13,11 +13,13 @@ export default async function ScreenPage({ params }: PageProps) {
     const seriesId = parseInt(resolvedParams.series_id);
     const seasonNumber = parseInt(resolvedParams.season_number, 10);
     const episodeNumber = parseInt(resolvedParams.episode_number);
-    const url = `https://vidsrc.xyz/embed/tv/${seriesId}/${seasonNumber}/${episodeNumber}`;
 
     return (
-        <div className="bg-black min-h-screen relative">
-            <Screen url={url} />
-        </div>
+        <EpisodeScreen
+            seriesId={seriesId}
+            seasonNumber={seasonNumber}
+            episodeNumber={episodeNumber}
+            mediaSection="series"
+        />
     );
 }
