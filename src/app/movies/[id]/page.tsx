@@ -1,4 +1,5 @@
 import { Screen } from "@/src/app/components/screen";
+import { movieEmbedUrl } from "@/src/app/lib/vidsrc";
 
 type PageProps = {
     params: Promise<{ id: string }>
@@ -7,7 +8,7 @@ type PageProps = {
 export default async function ScreenPage({ params }: PageProps) {
     const resolvedParams = await params;
     const Id = parseInt(resolvedParams.id, 10);
-    const url = `https://vidsrc.xyz/embed/movie/${Id}/`;
+    const url = movieEmbedUrl(Id);
 
     return (
         <div className="bg-black min-h-screen relative">

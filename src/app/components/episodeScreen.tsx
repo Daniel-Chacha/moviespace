@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { fetchSeriesDetail, fetchSeasonEpisodes } from '../lib/tmdb';
+import { tvEmbedUrl } from '../lib/vidsrc';
 import { TvShowDetails, Episode } from './interfaces';
 
 type EpisodeScreenProps = {
@@ -25,6 +26,12 @@ export const EpisodeScreen = ({
   const [overlayActive, setOverlayActive] = useState(true);
   const waitingForIframeClick = useRef(false);
 
+  // Bumped to force a fresh <iframe> mount. Reassigning `src` on an iframe that
+  // failed to load (and is now showing Chrome's chrome-error:// page) triggers
+  // "Unsafe attempt to load URL ... from frame with URL chrome-error://chromewebdata/".
+  // A new key remounts a clean iframe instead of re-navigating the errored one.
+  const [reloadKey, setReloadKey] = useState(0);
+
   // Data state
   const [seriesDetails, setSeriesDetails] = useState<TvShowDetails | null>(null);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -32,7 +39,7 @@ export const EpisodeScreen = ({
   const [loadingEpisodes, setLoadingEpisodes] = useState(true);
 
   const basePath = mediaSection === 'series' ? '/series' : '/animations';
-  const embedUrl = `https://vidsrc.xyz/embed/tv/${seriesId}/${currentSeason}/${episodeNumber}`;
+  const embedUrl = tvEmbedUrl(seriesId, currentSeason, episodeNumber);
   const totalSeasons = seriesDetails?.number_of_seasons ?? 1;
 
   // Sync season state when navigating between episodes via URL
@@ -168,8 +175,14 @@ export const EpisodeScreen = ({
       <div className="w-full max-w-5xl mx-auto px-4 mt-3">
         <div className="aspect-video rounded-lg overflow-hidden relative bg-black shadow-2xl">
           <iframe
+            key={`${embedUrl}-${reloadKey}`}
             title="episode"
             src={embedUrl}
+            // Delegate the features the player needs. A cross-origin iframe denies
+            // autoplay + Encrypted Media (Widevine/EME) by default, so the DRM/HLS
+            // player renders a blank frame here even though it plays fine when the
+            // same URL is opened as a top-level browser tab.
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
             allowFullScreen
             className="w-full h-full"
           />
@@ -179,6 +192,24 @@ export const EpisodeScreen = ({
               onClick={handleOverlayClick}
             />
           )}
+        </div>
+
+        {/* Recourse when the stream itself is down or blocked (adblock/DNS) */}
+        <div className="flex justify-end gap-2 mt-2">
+          <button
+            onClick={() => setReloadKey(k => k + 1)}
+            className="text-xs px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white transition-colors"
+          >
+            ⟳ Reload player
+          </button>
+          <a
+            href={embedUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white transition-colors"
+          >
+            Open ↗
+          </a>
         </div>
       </div>
 
