@@ -6,6 +6,9 @@
 // };
 const nextConfig = {
   images: {
+    // TMDB and Kitsu already serve pre-sized images from their own CDNs,
+    // so skip Vercel Image Optimization to avoid burning transformations.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
