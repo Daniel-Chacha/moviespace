@@ -6,7 +6,7 @@
 // Override without editing code by setting NEXT_PUBLIC_VIDSRC_HOST in .env.local.
 //
 // History: `vidsrc.xyz` went dead (confirmed 2026-05); switched to a live domain.
-export const VIDSRC_HOST = process.env.NEXT_PUBLIC_VIDSRC_HOST ?? 'vidsrcme.ru';
+export const VIDSRC_HOST = process.env.NEXT_PUBLIC_VIDSRC_HOST ?? 'vidsrc.to';
 
 export const movieEmbedUrl = (id: string | number) =>
   `https://${VIDSRC_HOST}/embed/movie/${id}/`;
